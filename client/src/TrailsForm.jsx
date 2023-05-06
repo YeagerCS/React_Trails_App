@@ -185,6 +185,31 @@ export function TrailsForm(){
         }
     }
 
+    useEffect(() => {
+        const lastUpdate = localStorage.getItem("LAST_W_UPDATE")
+
+        //Checks if there was a last update or calculates the difference of the last update and current time
+        if(!lastUpdate || (new Date() - new Date(lastUpdate)) >= 24 * 60 * 60 * 1000){ //if more than 24 hours have passed since lastUpdate, a new update occurs
+            updateWeather().then(updatedTrails => {
+                setTrails(updatedTrails)
+                localStorage.setItem("LAST_W_UPDATE", new Date().toISOString());
+            })
+        }
+        
+    }, [trails])
+
+    async function updateWeather(){
+       const updatedTrails = await Promise.all(trails.map(async trail =>{
+        const weatherStr = await getWeatherStr()
+        return {
+            ...trail,
+            weather: weatherSymbols[weatherStr]
+        }
+       }))
+
+       return updatedTrails;
+    }
+
     return(
         <>
             {displayDialog[0] && <Dialog closeAlert={() => setDisplayDialog([false, []])} message={displayDialog[1]}/>}
