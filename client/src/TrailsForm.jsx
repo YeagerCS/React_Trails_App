@@ -1,25 +1,9 @@
 import { useEffect, useState } from "react";
 import { isAfter, isBefore, setDate } from 'date-fns'
+import { weatherSymbols } from "./weatherSymbols";
 import Dialog from "./Dialog";
 const apikey = "621e2c097166ed6ba8f64cbed0173994"
-const weatherSymbols = {
-    "Thunderstorm": "🌩",
-    "Sand": "🌪",
-    "Ash" : "🌪",
-    "Squall": "🌪",
-    "Tornado": "🌪",
-    "Mist": "🌫",
-    "Smoke": "🌫",
-    "Haze": "🌫",
-    "Smoke": "🌫",
-    "Dust": "🌫",
-    "Fog": "🌫",
-    "Clouds": "☁",
-    "Drizzle": "🌧",
-    "Rain": "🌧",
-    "Snow": "🌨",
-    "Clear": "🌤"
-}
+
 
 export function TrailsForm(){
     const [trailName, setTrailName] = useState("")
@@ -77,12 +61,16 @@ export function TrailsForm(){
         });
     }
 
-    function fetchWeather() {
-        const selectedDate = new Date(trailDate);
-        const timestamp = Math.floor(selectedDate.getTime() / 1000);
+    function fetchWeather(date, time) {
+        const unixTimestamp = "1970-01-01T";
+
+        const selectedDate = new Date(date);
+        const selctedTime = new Date(unixTimestamp + time + ":00")
+        const timestamp = Math.floor((selectedDate.getTime() + selctedTime.getTime()) / 1000);
         return getCurrentLocation()
           .then(location => {
             const { latitude, longitude } = location;
+            console.log(latitude, longitude, timestamp)
             const url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&dt="+ timestamp +"&appid=" + apikey;
       
             return fetch(url)
@@ -90,15 +78,15 @@ export function TrailsForm(){
               .then(data => {
                 return data.weather[0].main;
               });
-          })
+        })
           .catch(error => {
             console.error(error);
-          });
+        });
     }
 
-    async function getWeatherStr(){
+    async function getWeatherStr(date, time){
         try{
-            const weather = await fetchWeather();
+            const weather = await fetchWeather(date, time);
             return weather;
         } catch(error){
             console.error(error);
@@ -113,7 +101,7 @@ export function TrailsForm(){
 
         e.preventDefault()
         if(dateValid && timeValid){
-            const weatherStr = await getWeatherStr()
+            const weatherStr = await getWeatherStr(trailDate, trailTime)
             console.log(weatherStr);
             setTrails(current => {
                 return [
@@ -200,7 +188,7 @@ export function TrailsForm(){
 
     async function updateWeather(){
        const updatedTrails = await Promise.all(trails.map(async trail =>{
-        const weatherStr = await getWeatherStr()
+        const weatherStr = await getWeatherStr(trail.date, trail.time)
         return {
             ...trail,
             weather: weatherSymbols[weatherStr]

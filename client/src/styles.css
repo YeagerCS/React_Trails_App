@@ -63,7 +63,7 @@ body{
 }
 
 .mainDiv{
-    max-width: 800px;
+    max-width: 1200px;
     flex-wrap: wrap;
     padding-top: 1rem;
     display: flex;
