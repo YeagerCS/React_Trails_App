@@ -43,7 +43,6 @@ export function TrailsForm(){
               return trail;
             }
         });
-
         return updatedTrails;
     }
 
