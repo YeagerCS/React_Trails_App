@@ -64,33 +64,31 @@ export function TrailsForm(){
         });
     }
 
-    function fetchWeather(date, time) {
+    function fetchWeather(date, time, _destination) {
         const unixTimestamp = "1970-01-01T";
 
         const selectedDate = new Date(date);
         const selctedTime = new Date(unixTimestamp + time + ":00")
         const timestamp = Math.floor((selectedDate.getTime() + selctedTime.getTime()) / 1000);
-        return getCurrentLocation()
-          .then(location => {
-            const { latitude, longitude } = location;
-            console.log(latitude, longitude, timestamp)
-            const url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon="+ longitude +"&appid=" + apikey;
+        const { latitude, longitude } = location;
+        console.log(latitude, longitude, timestamp)
+        const url = "https://api.openweathermap.org/data/2.5/weather?q="+ _destination +"&appid=" + apikey;
       
-            return fetch(url)
-              .then(response => response.json())
-              .then(data => {
+        return fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            if(data.cod === 200){
                 return [data.weather[0].main, Math.round(data.main.temp - 273.15)];
-              });
-        })
-          .catch(error => {
-            console.error(error);
+            } else{
+                return data.cod
+            }
         });
     }
 
-    async function getWeatherStr(date, time){
+    async function getWeatherStr(date, time, destination){
         try{
-            const weather = await fetchWeather(date, time);
-            return weather;
+            const weather = await fetchWeather(date, time, destination);
+            return weather; 
         } catch(error){
             console.error(error);
         }
@@ -104,7 +102,11 @@ export function TrailsForm(){
 
         e.preventDefault()
         if(dateValid && timeValid){
-            const weatherStrArr = await getWeatherStr(trailDate, trailTime)
+            const weatherStrArr = await getWeatherStr(trailDate, trailTime, destination)
+            if(weatherStrArr == 404){
+                setDisplayDialog([true, destination + " is not a valid city."])
+                return
+            }
             const weatherStr = weatherStrArr[0]
             console.log(weatherSymbols[weatherStr]);
             setTrails(current => {

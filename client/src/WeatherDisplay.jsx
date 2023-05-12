@@ -17,9 +17,9 @@ export default function WeatherDisplay({ trail, getWeatherStr, close }){
         const formattedTimePlus2h = format(timePlus2h, "HH:mm")
 
 
-        const _weatherCurrent = await getWeatherStr(trail.date, time)
-        const _weatherMinus2h = await getWeatherStr(trail.date, timeMinus2h)
-        const _weatherPlus2h = await getWeatherStr(trail.date, timePlus2h)
+        const _weatherCurrent = await getWeatherStr(trail.date, time, trail.destination)
+        const _weatherMinus2h = await getWeatherStr(trail.date, timeMinus2h, trail.destination)
+        const _weatherPlus2h = await getWeatherStr(trail.date, timePlus2h, trail.destination)
 
         _weatherCurrent.push(timeStr)
         _weatherMinus2h.push(formattedTimeMinus2h)
