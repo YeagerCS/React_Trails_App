@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { isAfter, isBefore, setDate } from 'date-fns'
 import { weatherSymbols } from "./weatherSymbols";
 import Dialog from "./Dialog";
+import WeatherDisplay from "./WeatherDisplay";
 const apikey = "621e2c097166ed6ba8f64cbed0173994"
 
 
@@ -13,6 +14,8 @@ export function TrailsForm(){
     const [displayDialog, setDisplayDialog] = useState(false)
     const [datesSorted, setDatesSorted] = useState(true)
     const [namesSorted, setNamesSorted] = useState(false)
+    const [weatherDisplay, setWeatherDisplay] = useState(false)
+    const [selectedTrail, setSelectedTrail] = useState([])
 
     const [trails, setTrails] = useState(() => {
        if(localStorage.getItem("TRAILS")){
@@ -71,12 +74,12 @@ export function TrailsForm(){
           .then(location => {
             const { latitude, longitude } = location;
             console.log(latitude, longitude, timestamp)
-            const url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon=" + longitude + "&dt="+ timestamp +"&appid=" + apikey;
+            const url = "https://api.openweathermap.org/data/2.5/weather?lat=" + latitude + "&lon="+ longitude +"&appid=" + apikey;
       
             return fetch(url)
               .then(response => response.json())
               .then(data => {
-                return data.weather[0].main;
+                return [data.weather[0].main, Math.round(data.main.temp - 273.15)];
               });
         })
           .catch(error => {
@@ -101,7 +104,7 @@ export function TrailsForm(){
 
         e.preventDefault()
         if(dateValid && timeValid){
-            const weatherStr = await getWeatherStr(trailDate, trailTime)
+            const weatherStr = await getWeatherStr(trailDate, trailTime)[0]
             console.log(weatherStr);
             setTrails(current => {
                 return [
@@ -199,8 +202,14 @@ export function TrailsForm(){
        return updatedTrails;
     }
 
+    function setSelected(trail){
+        setWeatherDisplay(!weatherDisplay)
+        setSelectedTrail(trail)
+    }
+
     return(
         <>
+            {weatherDisplay && <WeatherDisplay close={() => setWeatherDisplay(false)} trail={selectedTrail} getWeatherStr={getWeatherStr}/>}
             {displayDialog[0] && <Dialog closeAlert={() => setDisplayDialog([false, []])} message={displayDialog[1]}/>}
             <div className="mainDiv container">
             <div className="d-flex flex-row justify-content-between flex-wrap">
@@ -210,9 +219,13 @@ export function TrailsForm(){
                 <label htmlFor="trailDate">Ausflugsdatum</label>
                 <input type="date" name="trailDate" id="trailDate" className="boxStyle" value={trailDate} onChange={e => setTrailDate(e.target.value)}/>
                 <label htmlFor="trailTime">Zeit</label>
+
                 <input type="text" name="trailTime" id="trailTime" placeholder="00:00..." className="boxStyle" value={trailTime} onChange={e => setTrailTime(e.target.value)}/>
                 <label htmlFor="destination">Ort</label>
                 <input type="text" name="destination" id="destination" placeholder="zB. Berlin" className="boxStyle" value={destination} onChange={e => setDestination(e.target.value)} />
+
+                <input type="time" name="trailTime" id="trailTime" placeholder="00:00..." className="boxStyle" value={trailTime} onChange={e => setTrailTime(e.target.value)}/>
+
                 <button className="btnStyle" onClick={handleAddTrails}>Submit</button>
                 </form>
                 <table className="styled-table">
@@ -228,7 +241,7 @@ export function TrailsForm(){
                     <tbody>
                         {trails.map((trail, index) => (
                             <>
-                                <tr key={trail.id} className={trail.isCurrent ? "" : "expired"}>
+                                <tr key={trail.id} className={trail.isCurrent ? "" : "expired"} onClick={e => setSelected(trail)}>
                                     <td>{trail.name} <strong>{trail.weather}</strong></td>
                                     <td>{getFormattedDate(trail.date.toString())}</td>
                                     <td>{trail.time}</td>
