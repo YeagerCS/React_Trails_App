@@ -104,8 +104,9 @@ export function TrailsForm(){
 
         e.preventDefault()
         if(dateValid && timeValid){
-            const weatherStr = await getWeatherStr(trailDate, trailTime)[0]
-            console.log(weatherStr);
+            const weatherStrArr = await getWeatherStr(trailDate, trailTime)
+            const weatherStr = weatherStrArr[0]
+            console.log(weatherSymbols[weatherStr]);
             setTrails(current => {
                 return [
                     ...current,
@@ -220,11 +221,10 @@ export function TrailsForm(){
                 <input type="date" name="trailDate" id="trailDate" className="boxStyle" value={trailDate} onChange={e => setTrailDate(e.target.value)}/>
                 <label htmlFor="trailTime">Zeit</label>
 
-                <input type="text" name="trailTime" id="trailTime" placeholder="00:00..." className="boxStyle" value={trailTime} onChange={e => setTrailTime(e.target.value)}/>
+                <input type="time" name="trailTime" id="trailTime" placeholder="00:00..." className="boxStyle" value={trailTime} onChange={e => setTrailTime(e.target.value)}/>         
                 <label htmlFor="destination">Ort</label>
                 <input type="text" name="destination" id="destination" placeholder="zB. Berlin" className="boxStyle" value={destination} onChange={e => setDestination(e.target.value)} />
-
-                <input type="time" name="trailTime" id="trailTime" placeholder="00:00..." className="boxStyle" value={trailTime} onChange={e => setTrailTime(e.target.value)}/>
+                
 
                 <button className="btnStyle" onClick={handleAddTrails}>Submit</button>
                 </form>
@@ -241,8 +241,8 @@ export function TrailsForm(){
                     <tbody>
                         {trails.map((trail, index) => (
                             <>
-                                <tr key={trail.id} className={trail.isCurrent ? "" : "expired"} onClick={e => setSelected(trail)}>
-                                    <td>{trail.name} <strong>{trail.weather}</strong></td>
+                                <tr key={trail.id} className={trail.isCurrent ? "" : "expired"}>
+                                    <td onClick={e => setSelected(trail)}>{trail.name} <strong>{trail.weather}</strong></td>
                                     <td>{getFormattedDate(trail.date.toString())}</td>
                                     <td>{trail.time}</td>
                                     <td>{trail.destination}</td>
