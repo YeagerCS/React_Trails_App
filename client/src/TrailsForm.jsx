@@ -9,6 +9,7 @@ export function TrailsForm(){
     const [trailName, setTrailName] = useState("")
     const [trailDate, setTrailDate] = useState("")
     const [trailTime, setTrailTime] = useState("")
+    const [destination, setDestination] = useState("")
     const [displayDialog, setDisplayDialog] = useState(false)
     const [datesSorted, setDatesSorted] = useState(true)
     const [namesSorted, setNamesSorted] = useState(false)
@@ -105,7 +106,7 @@ export function TrailsForm(){
             setTrails(current => {
                 return [
                     ...current,
-                    {id: crypto.randomUUID(), name: trailName, date: trailDate, isCurrent: true, time: trailTime, weather: weatherSymbols[weatherStr]}
+                    {id: crypto.randomUUID(), name: trailName, date: trailDate, isCurrent: true, time: trailTime, weather: weatherSymbols[weatherStr], destination: destination}
                 ];
             })
     
@@ -113,6 +114,7 @@ export function TrailsForm(){
             setTrailDate("")
             setTrailName("")
             setTrailTime("")
+            setDestination("")
         } else{
             const dateInvalidity = dateValid ? "" : "Date can't be in the past"
             const timeInvalidity = timeValid ? "" : "Invalid time format" 
@@ -209,6 +211,8 @@ export function TrailsForm(){
                 <input type="date" name="trailDate" id="trailDate" className="boxStyle" value={trailDate} onChange={e => setTrailDate(e.target.value)}/>
                 <label htmlFor="trailTime">Zeit</label>
                 <input type="text" name="trailTime" id="trailTime" placeholder="00:00..." className="boxStyle" value={trailTime} onChange={e => setTrailTime(e.target.value)}/>
+                <label htmlFor="destination">Ort</label>
+                <input type="text" name="destination" id="destination" placeholder="zB. Berlin" className="boxStyle" value={destination} onChange={e => setDestination(e.target.value)} />
                 <button className="btnStyle" onClick={handleAddTrails}>Submit</button>
                 </form>
                 <table className="styled-table">
@@ -217,6 +221,7 @@ export function TrailsForm(){
                             <th onClick={sortByName}>Name<strong>&#8693;</strong></th>
                             <th onClick={sortByDate}>Ausflugsdatum <strong>&#8693;</strong></th>
                             <th>Time</th>
+                            <th>Ort</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -227,6 +232,7 @@ export function TrailsForm(){
                                     <td>{trail.name} <strong>{trail.weather}</strong></td>
                                     <td>{getFormattedDate(trail.date.toString())}</td>
                                     <td>{trail.time}</td>
+                                    <td>{trail.destination}</td>
                                     <td><button onClick={e =>  handleDeleteTrails(e, trail.id)} className="btn btn-dark btn-outline-danger">Delete</button></td>
                                 </tr> 
                             </>

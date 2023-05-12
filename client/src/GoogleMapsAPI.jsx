@@ -1,6 +1,5 @@
 function GoogleMapsIFrame() {
     return {
-
-        
+    
     };
 }
