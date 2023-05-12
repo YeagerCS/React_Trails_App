@@ -220,12 +220,12 @@ export function TrailsForm(){
                 <input type="date" name="trailDate" id="trailDate" className="boxStyle" value={trailDate} onChange={e => setTrailDate(e.target.value)}/>
                 <label htmlFor="trailTime">Zeit</label>
 
-                <input type="text" name="trailTime" id="trailTime" placeholder="00:00..." className="boxStyle" value={trailTime} onChange={e => setTrailTime(e.target.value)}/>
+                <input type="time" name="trailTime" id="trailTime" placeholder="00:00..." className="boxStyle" value={trailTime} onChange={e => setTrailTime(e.target.value)}/>
+
                 <label htmlFor="destination">Ort</label>
                 <input type="text" name="destination" id="destination" placeholder="zB. Berlin" className="boxStyle" value={destination} onChange={e => setDestination(e.target.value)} />
 
-                <input type="time" name="trailTime" id="trailTime" placeholder="00:00..." className="boxStyle" value={trailTime} onChange={e => setTrailTime(e.target.value)}/>
-
+                
                 <button className="btnStyle" onClick={handleAddTrails}>Submit</button>
                 </form>
                 <table className="styled-table">
