@@ -3,6 +3,7 @@ import { isAfter, isBefore, setDate } from 'date-fns'
 import { weatherSymbols } from "./weatherSymbols";
 import Dialog from "./Dialog";
 import WeatherDisplay from "./WeatherDisplay";
+import { MapsIFrame } from "./MapsIFrame";
 const apikey = "621e2c097166ed6ba8f64cbed0173994"
 
 
@@ -15,6 +16,7 @@ export function TrailsForm(){
     const [datesSorted, setDatesSorted] = useState(true)
     const [namesSorted, setNamesSorted] = useState(false)
     const [weatherDisplay, setWeatherDisplay] = useState(false)
+    const [displayMaps, setDisplayMaps] = useState(false)
     const [selectedTrail, setSelectedTrail] = useState([])
 
     const [trails, setTrails] = useState(() => {
@@ -208,6 +210,7 @@ export function TrailsForm(){
         setSelectedTrail(trail)
     }
 
+
     return(
         <>
             {weatherDisplay && <WeatherDisplay close={() => setWeatherDisplay(false)} trail={selectedTrail} getWeatherStr={getWeatherStr}/>}
@@ -245,14 +248,15 @@ export function TrailsForm(){
                                     <td onClick={e => setSelected(trail)}>{trail.name} <strong>{trail.weather}</strong></td>
                                     <td>{getFormattedDate(trail.date.toString())}</td>
                                     <td>{trail.time}</td>
-                                    <td>{trail.destination}</td>
+                                    <td onClick={e => setDisplayMaps(true)}> {trail.destination} </td>
                                     <td><button onClick={e =>  handleDeleteTrails(e, trail.id)} className="btn btn-dark btn-outline-danger">Delete</button></td>
                                 </tr> 
                             </>
                         ))}
                     </tbody>
                 </table>    
-            </div>
+                {displayMaps && <MapsIFrame close={e => setDisplayMaps(false)}/>}
+            </div>  
             </div>
         </> 
     )
