@@ -203,3 +203,28 @@ nav div{
     font-weight: bold;
     color: yellow;
 }
+
+@media only screen and (max-width: 767px){
+    
+}
+
+#error404Div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+#error404{
+    font-size: 150px;
+}
+
+#error404Div p{
+    font-size: 35px;
+}
+
+#error404Div a{
+    font-size: 25px;
+    color:rgb(107, 215, 255);
+}

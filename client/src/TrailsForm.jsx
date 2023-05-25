@@ -1,55 +1,28 @@
-import { useEffect, useState } from "react";
-import React from "react"
 import { isAfter, isBefore, setDate } from 'date-fns'
 import { weatherSymbols } from "./weatherSymbols";
-import Dialog from "./Dialog";  
-import WeatherDisplay from "./WeatherDisplay";
+import { useEffect, useState } from "react";
+import { TrailsTable } from "./TrailsTable";
+import React from "react"
 import _translations from "./translations.json"
 
-
-
-const apikey = "621e2c097166ed6ba8f64cbed0173994"
-
-
-
-export function TrailsForm(){
+export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, setDisplayDialog }){
     const [trailName, setTrailName] = useState("")
     const [trailDate, setTrailDate] = useState("")
     const [trailTime, setTrailTime] = useState("")
-    const [destination, setDestination] = useState("")
-    const [displayDialog, setDisplayDialog] = useState(false)
     const [datesSorted, setDatesSorted] = useState(true)
     const [namesSorted, setNamesSorted] = useState(false)
-    const [weatherDisplay, setWeatherDisplay] = useState(false)
-    const [selectedTrail, setSelectedTrail] = useState([])
-    const [t, setT] = useState(() => {
-        if(localStorage.getItem("LANG")){
-            return localStorage.getItem("LANG")
-        }
-    })
-    
-
+    const [destination, setDestination] = useState("")
     const [trails, setTrails] = useState(() => {
-       if(localStorage.getItem("TRAILS")){
-        const trailsState = JSON.parse(localStorage.getItem("TRAILS"))
-        let sortedTrails = trailsState.sort((x, y) => (
-          new Date(y.date) - new Date(x.date)
-        ));
+        if(localStorage.getItem("TRAILS")){
+            const trailsState = JSON.parse(localStorage.getItem("TRAILS"))
+            let sortedTrails = trailsState.sort((x, y) => (
+            new Date(y.date) - new Date(x.date)
+            ));
 
-        return checkExpiration(sortedTrails)
-       } 
-       return []
+            return checkExpiration(sortedTrails)
+        } 
+        return []
     })
-
-    function getFormattedDate(stringDate){
-        const currentDate = new Date(stringDate)
-        const day = currentDate.getDate();
-        const month = currentDate.getMonth() + 1;
-        const year = currentDate.getFullYear();
-        const formattedDate = `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}`;
-      
-        return formattedDate;
-    }
 
     function checkExpiration(inpTrails){
         const updatedTrails = inpTrails.map(trail => {
@@ -61,51 +34,6 @@ export function TrailsForm(){
         });
         return updatedTrails;
     }
-
-    function getCurrentLocation() {
-        return new Promise((resolve, reject) => {
-          navigator.geolocation.getCurrentPosition(
-            position => {
-              const { latitude, longitude } = position.coords;
-              resolve({ latitude, longitude });
-            },
-            error => {
-              reject(error);
-            }
-          );
-        });
-    }
-
-    function fetchWeather(date, time, _destination) {
-        const unixTimestamp = "1970-01-01T";
-
-        const selectedDate = new Date(date);
-        const selctedTime = new Date(unixTimestamp + time + ":00")
-        const timestamp = Math.floor((selectedDate.getTime() + selctedTime.getTime()) / 1000);
-        const { latitude, longitude } = location;
-        console.log(latitude, longitude, timestamp)
-        const url = "https://api.openweathermap.org/data/2.5/weather?q="+ _destination +"&appid=" + apikey;
-      
-        return fetch(url)
-          .then(response => response.json())
-          .then(data => {
-            if(data.cod === 200){
-                return [data.weather[0].main, Math.round(data.main.temp - 273.15)];
-            } else{
-                return data.cod
-            }
-        });
-    }
-
-    async function getWeatherStr(date, time, destination){
-        try{
-            const weather = await fetchWeather(date, time, destination);
-            return weather; 
-        } catch(error){
-            console.error(error);
-        }
-    }
-
 
     async function handleAddTrails(e){
         const timeRegex = /^(?:[01]\d|2[0-3]):[0-5]\d$/;
@@ -134,8 +62,8 @@ export function TrailsForm(){
             setTrailTime("")
             setDestination("")
         } else{
-            const dateInvalidity = dateValid ? "" : "Date can't be in the past"
-            const timeInvalidity = timeValid ? "" : "Invalid time format" 
+            const dateInvalidity = dateValid ? "" : t["dateError"]
+            const timeInvalidity = timeValid ? "" : t["timeError"]
             const error = dateInvalidity + "" + (timeInvalidity && dateInvalidity && " / ") + timeInvalidity
             setDisplayDialog([true, error])
         }
@@ -147,27 +75,6 @@ export function TrailsForm(){
         setTrails(current => {
             return current.filter(trail => trail.id !== id)
         })
-    }
-
-    useEffect(() => {
-        localStorage.setItem("TRAILS", JSON.stringify(trails))
-       
-    }, [trails])
-
-    useEffect(() => {
-        let lang = localStorage.getItem("LANG")
-        if(lang){
-            getLanguage(lang)
-        } else{
-            getLanguage("en")
-        }
-        console.log(t);
-    }, [])
-
-    function getLanguage(lang){
-        localStorage.setItem("LANG", lang)
-        const selectedLang = eval("_translations." + lang) 
-        setT(selectedLang)
     }
 
     function sortByDate(){
@@ -197,7 +104,7 @@ export function TrailsForm(){
         ));
         return sortedTrails;
     }
-
+    
     function sortByName(e){
         e.preventDefault()
         if(namesSorted){
@@ -219,6 +126,7 @@ export function TrailsForm(){
                 localStorage.setItem("LAST_W_UPDATE", new Date().toISOString());
             })
         }
+        localStorage.setItem("TRAILS", JSON.stringify(trails))
         
     }, [trails])
 
@@ -234,35 +142,8 @@ export function TrailsForm(){
        return updatedTrails;
     }
 
-    function setSelected(trail){
-        setWeatherDisplay(!weatherDisplay)
-        setSelectedTrail(trail)
-    }
-
     return(
-        <>
-            {weatherDisplay && <WeatherDisplay close={() => setWeatherDisplay(false)} trail={selectedTrail} getWeatherStr={getWeatherStr}/>}
-            {displayDialog[0] && <Dialog closeAlert={() => setDisplayDialog([false, []])} message={displayDialog[1]}/>}
-            <header>
-                <nav>   
-                    <ul>
-                        <div> {console.log(t)}
-                            <li><button className={localStorage.getItem("LANG") == "de" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("de")}>German</button></li>
-                            <li><button className={localStorage.getItem("LANG") == "en" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("en")}>English</button></li>
-                            <li><button className={localStorage.getItem("LANG") == "sq" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("sq")}>Albanian</button></li>
-                            <li><button className={localStorage.getItem("LANG") == "fr" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("fr")}>French</button></li>
-                            <li><button className={localStorage.getItem("LANG") == "bs" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("bs")}>Bosnian</button></li>
-                            <li><button className={localStorage.getItem("LANG") == "ar" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("ar")}>Arabic</button></li>
-                            <li><button className={localStorage.getItem("LANG") == "zh" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("zh")}>Chinese</button></li>
-                            <li><button className={localStorage.getItem("LANG") == "ja" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("ja")}>Japanese</button></li>
-                            <li><button className={localStorage.getItem("LANG") == "gsw" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("gsw")}>Swiss German</button></li>
-                            <li><button className={localStorage.getItem("LANG") == "af" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("af")}>African</button></li>
-                            <li><button className={localStorage.getItem("LANG") == "pt" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("pt")}>Portuguese</button></li>
-                        </div>
-                    </ul>
-                </nav>
-            </header>
-            <div className="mainDiv container">
+        <div className="mainDiv container">
             <div className="d-flex flex-row justify-content-between flex-wrap">
                 <form className="flex-grow-1 gap-1 flex-column d-flex me-5 mt-2">
                 <label htmlFor="trailName">{t["name"]}</label>
@@ -278,32 +159,8 @@ export function TrailsForm(){
 
                 <button className="btnStyle" onClick={handleAddTrails}>{t["submit"]}</button>
                 </form>
-                <table className="styled-table">
-                    <thead>
-                        <tr>
-                            <th onClick={sortByName}>{t["name"]}<strong>&#8693;</strong></th>
-                            <th onClick={sortByDate}>{t["excursionDate"]} <strong>&#8693;</strong></th>
-                            <th>{t["time"]}</th>
-                            <th>{t["destination"]}</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {trails.map((trail, index) => (
-                            <>
-                                <tr key={trail.id} className={trail.isCurrent ? "" : "expired"}>
-                                    <td onClick={e => setSelected(trail)}>{trail.name} <strong>{trail.weather}</strong></td>
-                                    <td>{getFormattedDate(trail.date.toString())}</td>
-                                    <td>{trail.time}</td>
-                                    <td>{trail.destination}</td>
-                                    <td><button onClick={e =>  handleDeleteTrails(e, trail.id)} className="btn btn-dark btn-outline-danger">{t["delete"]}</button></td>
-                                </tr> 
-                            </>
-                        ))}
-                    </tbody>
-                </table>    
+                <TrailsTable sortByName={sortByName} sortByDate={sortByDate} t={t} trails={trails} getFormattedDate={getFormattedDate} handleDeleteTrails={handleDeleteTrails} setSelected={setSelected}/>
             </div>
-            </div>
-        </> 
+        </div>
     )
 }

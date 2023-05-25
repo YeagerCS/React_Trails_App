@@ -5,7 +5,12 @@
         "time": "Time",
         "destination": "Destination",
         "delete": "Delete",
-        "submit": "Submit"
+        "submit": "Submit",
+        "e404": "Page not found",
+        "e404message": "Unfortunately, there are no trails on this page!",
+        "e404back": "Go Back",
+        "dateError": "Date can't be in the past",
+        "timeError": "Invalid time format"
     },
     "de":{
         "name": "Name",
@@ -13,7 +18,12 @@
         "time": "Zeit",
         "destination": "Ort",
         "delete": "Löschen",
-        "submit": "Absenden"
+        "submit": "Absenden",
+        "e404": "Seite nicht gefunden",
+        "e404message": "Leider gibt es auf dieser Seite keine Wanderwege!",
+        "e404back": "Zurück",
+        "dateError": "Date kann nicht in der Vergangenheit liegen",
+        "timeError": "Ungültiges Zeitformat"
     },
     "fr":{
         "name": "Nom",
@@ -21,7 +31,12 @@
         "time": "Heure",
         "destination": "Destination",
         "delete": "Supprimer",
-        "submit": "Soumettre"
+        "submit": "Soumettre",
+        "e404": "Page non trouvée",
+        "e404message": "Malheureusement, il n'y a pas de sentiers sur cette page!",
+        "e404back": "Retour",
+        "dateError": "La date ne peut pas être dans le passé",
+        "timeError": "Format d'heure non valide"
     },
     "sq":{
         "name": "Emri",
@@ -29,15 +44,12 @@
         "time": "Koha",
         "destination": "Destinacioni",
         "delete": "Fshij",
-        "submit": "Dërgo"
-    },
-    "bs":{
-        "name": "Ime",
-        "excursionDate": "Datum izleta",
-        "time": "Vrijeme",
-        "destination": "Odredište",
-        "delete": "Izbriši",
-        "submit": "Potvrdi"
+        "submit": "Dërgo",
+        "e404": "Faqja nuk gjendet",
+        "e404message": "Na vjen keq, nuk ka asnjë shkëmbim në këtë faqe!",
+        "e404back": "Kthehu",
+        "dateError": "Data nuk mund të jetë në të kaluarën",
+        "timeError": "Format i pavlefshëm i kohës"
     },
     "ar":{
         "name": "الاسم",
@@ -45,46 +57,11 @@
         "time": "الوقت",
         "destination": "الوجهة",
         "delete": "حذف",
-        "submit": "إرسال"
-    },
-    "zh":{
-        "name": "姓名",
-        "excursionDate": "旅行日期",
-        "time": "时间",
-        "destination": "目的地",
-        "delete": "删除",
-        "submit": "提交"
-    },
-    "ja":{
-        "name": "名前",
-        "excursionDate": "旅行日",
-        "time": "時間",
-        "destination": "目的地",
-        "delete": "削除",
-        "submit": "送信"
-    },
-    "gsw":{
-        "name": "Name",
-        "excursionDate": "Datum",
-        "time": "Zyt",
-        "destination": "Zielort",
-        "delete": "Lösche",
-        "submit": "Abschicke"
-    },
-    "pt":{
-        "name": "Nome",
-        "excursionDate": "Data da excursão",
-        "time": "Hora",
-        "destination": "Destino",
-        "delete": "Excluir",
-        "submit": "Enviar"
-    },
-    "af":{
-        "name": "Naam",
-        "excursionDate": "Uitstap Datum",
-        "time": "Tyd",
-        "destination": "Bestemming",
-        "delete": "Verwyder",
-        "submit": "Indien"
+        "submit": "إرسال",
+        "e404": "الصفحة غير موجودة",
+        "e404message": "عذرًا، لا توجد مسارات في هذه الصفحة!",
+        "e404back": "العودة",
+        "dateError": "لا يمكن أن يكون التاريخ في الماضي",
+        "timeError": "تنسيق الوقت غير صالح"
     }
 }
