@@ -1,9 +1,15 @@
 import { useEffect, useState } from "react";
+import React from "react"
 import { isAfter, isBefore, setDate } from 'date-fns'
 import { weatherSymbols } from "./weatherSymbols";
-import Dialog from "./Dialog";
+import Dialog from "./Dialog";  
 import WeatherDisplay from "./WeatherDisplay";
+import _translations from "./translations.json"
+
+
+
 const apikey = "621e2c097166ed6ba8f64cbed0173994"
+
 
 
 export function TrailsForm(){
@@ -16,6 +22,12 @@ export function TrailsForm(){
     const [namesSorted, setNamesSorted] = useState(false)
     const [weatherDisplay, setWeatherDisplay] = useState(false)
     const [selectedTrail, setSelectedTrail] = useState([])
+    const [t, setT] = useState(() => {
+        if(localStorage.getItem("LANG")){
+            return localStorage.getItem("LANG")
+        }
+    })
+    
 
     const [trails, setTrails] = useState(() => {
        if(localStorage.getItem("TRAILS")){
@@ -139,7 +151,24 @@ export function TrailsForm(){
 
     useEffect(() => {
         localStorage.setItem("TRAILS", JSON.stringify(trails))
+       
     }, [trails])
+
+    useEffect(() => {
+        let lang = localStorage.getItem("LANG")
+        if(lang){
+            getLanguage(lang)
+        } else{
+            getLanguage("en")
+        }
+        console.log(t);
+    }, [])
+
+    function getLanguage(lang){
+        localStorage.setItem("LANG", lang)
+        const selectedLang = eval("_translations." + lang) 
+        setT(selectedLang)
+    }
 
     function sortByDate(){
         if(datesSorted){
@@ -214,29 +243,48 @@ export function TrailsForm(){
         <>
             {weatherDisplay && <WeatherDisplay close={() => setWeatherDisplay(false)} trail={selectedTrail} getWeatherStr={getWeatherStr}/>}
             {displayDialog[0] && <Dialog closeAlert={() => setDisplayDialog([false, []])} message={displayDialog[1]}/>}
+            <header>
+                <nav>   
+                    <ul>
+                        <div> {console.log(t)}
+                            <li><button className={localStorage.getItem("LANG") == "de" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("de")}>German</button></li>
+                            <li><button className={localStorage.getItem("LANG") == "en" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("en")}>English</button></li>
+                            <li><button className={localStorage.getItem("LANG") == "sq" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("sq")}>Albanian</button></li>
+                            <li><button className={localStorage.getItem("LANG") == "fr" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("fr")}>French</button></li>
+                            <li><button className={localStorage.getItem("LANG") == "bs" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("bs")}>Bosnian</button></li>
+                            <li><button className={localStorage.getItem("LANG") == "ar" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("ar")}>Arabic</button></li>
+                            <li><button className={localStorage.getItem("LANG") == "zh" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("zh")}>Chinese</button></li>
+                            <li><button className={localStorage.getItem("LANG") == "ja" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("ja")}>Japanese</button></li>
+                            <li><button className={localStorage.getItem("LANG") == "gsw" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("gsw")}>Swiss German</button></li>
+                            <li><button className={localStorage.getItem("LANG") == "af" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("af")}>African</button></li>
+                            <li><button className={localStorage.getItem("LANG") == "pt" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("pt")}>Portuguese</button></li>
+                        </div>
+                    </ul>
+                </nav>
+            </header>
             <div className="mainDiv container">
             <div className="d-flex flex-row justify-content-between flex-wrap">
                 <form className="flex-grow-1 gap-1 flex-column d-flex me-5 mt-2">
-                <label htmlFor="trailName">Name</label>
+                <label htmlFor="trailName">{t["name"]}</label>
                 <input type="text" name="trailName" id="trailName" className="boxStyle" value={trailName} onChange={e => setTrailName(e.target.value)}/>
-                <label htmlFor="trailDate">Ausflugsdatum</label>
+                <label htmlFor="trailDate">{t["excursionDate"]}</label>
                 <input type="date" name="trailDate" id="trailDate" className="boxStyle" value={trailDate} onChange={e => setTrailDate(e.target.value)}/>
-                <label htmlFor="trailTime">Zeit</label>
+                <label htmlFor="trailTime">{t["time"]}</label>
 
                 <input type="time" name="trailTime" id="trailTime" placeholder="00:00..." className="boxStyle" value={trailTime} onChange={e => setTrailTime(e.target.value)}/>         
-                <label htmlFor="destination">Ort</label>
+                <label htmlFor="destination">{t["destination"]}</label>
                 <input type="text" name="destination" id="destination" placeholder="zB. Berlin" className="boxStyle" value={destination} onChange={e => setDestination(e.target.value)} />
                 
 
-                <button className="btnStyle" onClick={handleAddTrails}>Submit</button>
+                <button className="btnStyle" onClick={handleAddTrails}>{t["submit"]}</button>
                 </form>
                 <table className="styled-table">
                     <thead>
                         <tr>
-                            <th onClick={sortByName}>Name<strong>&#8693;</strong></th>
-                            <th onClick={sortByDate}>Ausflugsdatum <strong>&#8693;</strong></th>
-                            <th>Time</th>
-                            <th>Ort</th>
+                            <th onClick={sortByName}>{t["name"]}<strong>&#8693;</strong></th>
+                            <th onClick={sortByDate}>{t["excursionDate"]} <strong>&#8693;</strong></th>
+                            <th>{t["time"]}</th>
+                            <th>{t["destination"]}</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -248,7 +296,7 @@ export function TrailsForm(){
                                     <td>{getFormattedDate(trail.date.toString())}</td>
                                     <td>{trail.time}</td>
                                     <td>{trail.destination}</td>
-                                    <td><button onClick={e =>  handleDeleteTrails(e, trail.id)} className="btn btn-dark btn-outline-danger">Delete</button></td>
+                                    <td><button onClick={e =>  handleDeleteTrails(e, trail.id)} className="btn btn-dark btn-outline-danger">{t["delete"]}</button></td>
                                 </tr> 
                             </>
                         ))}

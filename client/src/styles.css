@@ -173,3 +173,33 @@ strong{
     padding: 8px 16px;
     height: 40px;
   }
+
+  nav ul li {
+    list-style-type: none;
+}
+
+nav ul li img{
+    width: 100px;
+    height: 30px;
+}
+
+
+header ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+header{
+    margin: 5px;
+}
+
+nav div{
+    display: flex;
+    gap: 1em;
+}
+
+.selectedLang{
+    font-weight: bold;
+    color: yellow;
+}
