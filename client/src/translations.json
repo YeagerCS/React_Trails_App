@@ -1,0 +1,90 @@
+{
+    "en":{
+        "name": "Name",
+        "excursionDate": "Excursion Date",
+        "time": "Time",
+        "destination": "Destination",
+        "delete": "Delete",
+        "submit": "Submit"
+    },
+    "de":{
+        "name": "Name",
+        "excursionDate": "Ausflugsdatum",
+        "time": "Zeit",
+        "destination": "Ort",
+        "delete": "Löschen",
+        "submit": "Absenden"
+    },
+    "fr":{
+        "name": "Nom",
+        "excursionDate": "Date de l'excursion",
+        "time": "Heure",
+        "destination": "Destination",
+        "delete": "Supprimer",
+        "submit": "Soumettre"
+    },
+    "sq":{
+        "name": "Emri",
+        "excursionDate": "Data e ekskursionit",
+        "time": "Koha",
+        "destination": "Destinacioni",
+        "delete": "Fshij",
+        "submit": "Dërgo"
+    },
+    "bs":{
+        "name": "Ime",
+        "excursionDate": "Datum izleta",
+        "time": "Vrijeme",
+        "destination": "Odredište",
+        "delete": "Izbriši",
+        "submit": "Potvrdi"
+    },
+    "ar":{
+        "name": "الاسم",
+        "excursionDate": "تاريخ الرحلة",
+        "time": "الوقت",
+        "destination": "الوجهة",
+        "delete": "حذف",
+        "submit": "إرسال"
+    },
+    "zh":{
+        "name": "姓名",
+        "excursionDate": "旅行日期",
+        "time": "时间",
+        "destination": "目的地",
+        "delete": "删除",
+        "submit": "提交"
+    },
+    "ja":{
+        "name": "名前",
+        "excursionDate": "旅行日",
+        "time": "時間",
+        "destination": "目的地",
+        "delete": "削除",
+        "submit": "送信"
+    },
+    "gsw":{
+        "name": "Name",
+        "excursionDate": "Datum",
+        "time": "Zyt",
+        "destination": "Zielort",
+        "delete": "Lösche",
+        "submit": "Abschicke"
+    },
+    "pt":{
+        "name": "Nome",
+        "excursionDate": "Data da excursão",
+        "time": "Hora",
+        "destination": "Destino",
+        "delete": "Excluir",
+        "submit": "Enviar"
+    },
+    "af":{
+        "name": "Naam",
+        "excursionDate": "Uitstap Datum",
+        "time": "Tyd",
+        "destination": "Bestemming",
+        "delete": "Verwyder",
+        "submit": "Indien"
+    }
+}
