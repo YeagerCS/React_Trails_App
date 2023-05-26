@@ -4,6 +4,7 @@ import "./styles.css"
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import _translations from "./translations.json"
 import { useEffect, useState } from "react";
+import Registration from "./Registration";
 
 
 export default function App(){
@@ -93,9 +94,9 @@ export default function App(){
       <BrowserRouter>
         <Routes>
           <Route exact path="/" index element={<Home dragDiv={dragDiv} t={t} getLanguage={getLanguage}/>}/>
-          <Route path="/*" element={<NotFound t={t}/>}/>
+          <Route path="/Registration" element={<Registration></Registration>}></Route>
         </Routes>
       </BrowserRouter>
     </>
   )
-}
+} 

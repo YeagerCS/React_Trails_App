@@ -4,14 +4,18 @@ import Dialog from "./Dialog";
 import WeatherDisplay from "./WeatherDisplay";
 import { Header } from "./Header";
 import { TrailsForm } from "./TrailsForm";
-
+import LoginPopup from "./Login";
 
 
 const apikey = "621e2c097166ed6ba8f64cbed0173994"
 
-
-
 export function Home({t, getLanguage, dragDiv}){
+
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+  
+    const handleTogglePopup = () => {
+      setIsPopupOpen(!isPopupOpen);
+    };
    
     const [displayDialog, setDisplayDialog] = useState(false)
     const [selectedTrail, setSelectedTrail] = useState([])
@@ -27,10 +31,6 @@ export function Home({t, getLanguage, dragDiv}){
       
         return formattedDate;
     }
-
-    
-
-    
 
     function fetchWeather(date, time, _destination) {
         const unixTimestamp = "1970-01-01T";
@@ -87,6 +87,7 @@ export function Home({t, getLanguage, dragDiv}){
                 <Header getLanguage={getLanguage}/>
                 <TrailsForm t={t} setSelected={setSelected} getWeatherStr={getWeatherStr} getFormattedDate={getFormattedDate} setDisplayDialog={setDisplayDialog} dragDiv={dragDiv}/>
             </div>
+            <button onClick={handleTogglePopup}>Open Popup</button>{isPopupOpen && <LoginPopup handleTogglePopup={handleTogglePopup} />}
         </> 
     )
 }
