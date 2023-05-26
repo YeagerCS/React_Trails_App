@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-//import fire from './fire';   
+import { returnAuth } from "./fire" 
 import "./styles.css"
 
 const LoginPopup = ({ handleTogglePopup }) => {
@@ -9,10 +9,10 @@ const LoginPopup = ({ handleTogglePopup }) => {
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, username, password)
+    const auth = returnAuth();
+signInWithEmailAndPassword(auth, username, password)
   .then((userCredential) => {
-    console.log("logged in")
+    handleTogglePopup();
     const user = userCredential.user;
     // ...
   })
@@ -20,8 +20,6 @@ const LoginPopup = ({ handleTogglePopup }) => {
     const errorCode = error.code;
     const errorMessage = error.message;
   });
-        
-    handleTogglePopup();
   };
 
   return (

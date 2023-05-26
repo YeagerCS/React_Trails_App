@@ -1,18 +1,21 @@
 import React, { useState } from 'react';
 import "./styles.css"
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { returnAuth } from "./fire"
+import { useNavigate } from 'react-router-dom';
 
 export default function Registration({ }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleregistration = () => {
-    const auth = getAuth();
+    const auth = returnAuth();
     createUserWithEmailAndPassword(auth, username, password)
   .then((userCredential) => {
     console.log("registered")
     const user = userCredential.user;
-    // ...
+    navigate("/")
   })
   .catch((error) => {
     const errorCode = error.code;
@@ -38,7 +41,7 @@ export default function Registration({ }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}/>
             <br />
-          <button className='RegistartionsButton' type="button" onSubmit={handleregistration} onClick={handleregistration}>Register</button>
+          <button className='RegistartionsButton' type="button" onClick={handleregistration}>Register</button>
           <a href='/'><button className='CloseButton' type="button">Close</button></a>
         </form>
       </div>

@@ -87,7 +87,7 @@ export function Home({t, getLanguage, dragDiv}){
                 <Header getLanguage={getLanguage}/>
                 <TrailsForm t={t} setSelected={setSelected} getWeatherStr={getWeatherStr} getFormattedDate={getFormattedDate} setDisplayDialog={setDisplayDialog} dragDiv={dragDiv}/>
             </div>
-            <button onClick={handleTogglePopup}>Open Popup</button>{isPopupOpen && <LoginPopup handleTogglePopup={handleTogglePopup} />}
+            <button onClick={handleTogglePopup}>Login</button>{isPopupOpen && <LoginPopup handleTogglePopup={handleTogglePopup} />}
         </> 
     )
 }
