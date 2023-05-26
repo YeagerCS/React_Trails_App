@@ -252,7 +252,7 @@ nav div{
 
 #mapClose{
     float: left;
-    z-index: 100;
+    z-index: 100; 
 }
 
 .popup-overlay {
