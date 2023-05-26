@@ -11,7 +11,9 @@ const apikey = "621e2c097166ed6ba8f64cbed0173994"
 
 export function Home({t, getLanguage, dragDiv}){
 
-    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [isPopupOpen, setIsPopupOpen] = useState(true);
+
+
   
     const handleTogglePopup = () => {
       setIsPopupOpen(!isPopupOpen);
@@ -71,14 +73,12 @@ export function Home({t, getLanguage, dragDiv}){
         console.log(t);
     }, [])
 
-    
 
     function setSelected(trail){
         setWeatherDisplay(!weatherDisplay)
         setSelectedTrail(trail)
     }
     
-
     return(
         <>
             {weatherDisplay && <WeatherDisplay close={() => setWeatherDisplay(false)} trail={selectedTrail} getWeatherStr={getWeatherStr} dragDiv={dragDiv}/>}
@@ -87,7 +87,7 @@ export function Home({t, getLanguage, dragDiv}){
                 <Header getLanguage={getLanguage}/>
                 <TrailsForm t={t} setSelected={setSelected} getWeatherStr={getWeatherStr} getFormattedDate={getFormattedDate} setDisplayDialog={setDisplayDialog} dragDiv={dragDiv}/>
             </div>
-            <button onClick={handleTogglePopup}>Login</button>{isPopupOpen && <LoginPopup handleTogglePopup={handleTogglePopup} />}
+            <button onClick={handleTogglePopup}>Logout</button>{isPopupOpen && <LoginPopup handleTogglePopup={handleTogglePopup} />}
         </> 
     )
 }

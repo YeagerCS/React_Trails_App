@@ -13,7 +13,6 @@ export default function Registration({ }) {
     const auth = returnAuth();
     createUserWithEmailAndPassword(auth, username, password)
   .then((userCredential) => {
-    console.log("registered")
     const user = userCredential.user;
     navigate("/")
   })

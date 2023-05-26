@@ -28,21 +28,22 @@ signInWithEmailAndPassword(auth, username, password)
         <h2>Login</h2>
         <form>
           <input
-            id="email"
+            id="boxStyle"
+            className='boxStyle'
             type="text"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}/>
           <input
-            id="password"
+            id="boxStyle"
+            className='boxStyle'
             type="password"
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}/>
             <br />
           <button className='LoginButton' type="button" onClick={handleLogin}>Login</button>
-          <button className='CloseButton' type="button" onClick={handleTogglePopup}>Close</button>
-          <p>Noch kein Konto? eröffne jetzt eines </p> <a href='/Registration'>hier</a>
+          <p id='keinKontoText'>Noch kein Konto? eröffne jetzt eines <a href='/Registration'>hier</a></p>
         </form>
       </div>
     </div>

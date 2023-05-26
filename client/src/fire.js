@@ -26,5 +26,9 @@ export function returnAuth(){
   return auth
 }
 
+export function returnDB(){
+  return db
+}
+
 
 
