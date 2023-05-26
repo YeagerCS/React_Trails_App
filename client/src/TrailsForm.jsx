@@ -5,6 +5,8 @@ import { TrailsTable } from "./TrailsTable";
 import React from "react"
 import _translations from "./translations.json"
 import { useRef } from 'react';
+import { collection, addDoc } from "firebase/firestore";
+import { returnDB } from "./fire" 
 
 
 export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, setDisplayDialog, dragDiv }){
@@ -51,13 +53,26 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
             }
             const weatherStr = weatherStrArr[0]
             console.log(weatherSymbols[weatherStr]);
+            
             setTrails(current => {
                 return [
                     ...current,
                     {id: crypto.randomUUID(), name: trailName, date: trailDate, isCurrent: true, time: trailTime, weather: weatherSymbols[weatherStr], destination: destination}
                 ];
             })
-    
+           try {
+             const docRef = await addDoc(collection(returnDB(), "trails"), {
+               name: trailName,
+               date: trailDate,
+               isCurrent: true,
+               time: trailTime,
+               weather: weatherSymbols[weatherStr],
+               destination: destination
+             });
+             console.log("Document written with ID: ", docRef.id);
+             } catch (e) {
+                console.error("Error adding document: ", e);
+              }
             setTrails(current => sortDates([...current]))
             setTrailDate("")
             setTrailName("")
@@ -154,7 +169,6 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
 
        return updatedTrails;
     }
-
     
 
     return(
