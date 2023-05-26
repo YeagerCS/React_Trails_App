@@ -94,7 +94,8 @@ export default function App(){
       <BrowserRouter>
         <Routes>
           <Route exact path="/" index element={<Home dragDiv={dragDiv} t={t} getLanguage={getLanguage}/>}/>
-          <Route path="/Registration" element={<Registration></Registration>}></Route>
+          <Route path="/Registration" element={<Registration/>}/>
+          <Route path="/*" element={<NotFound t={t}/>}/>
         </Routes>
       </BrowserRouter>
     </>
