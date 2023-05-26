@@ -251,8 +251,7 @@ nav div{
 }
 
 #mapClose{
-    float: right;
-    position: absolute;
+    float: left;
     z-index: 100;
 }
 
@@ -304,3 +303,8 @@ nav div{
     margin-left: 10px;
   }
   
+  #mapNav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
