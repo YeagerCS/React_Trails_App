@@ -2,7 +2,7 @@ import { addHours, parse, subHours, format } from "date-fns";
 import { useEffect, useState } from "react";
 import { weatherSymbols } from "./weatherSymbols";
 
-export default function WeatherDisplay({ trail, getWeatherStr, close }){
+export default function WeatherDisplay({ trail, getWeatherStr, close, dragDiv }){
     const [weatherMinus2h, setWeatherMinus2h] = useState([])
     const [weatherCurrent, setWeatherCurrent] = useState([])
     const [weatherPlus2h, setWeatherPlus2h] = useState([])
@@ -35,10 +35,11 @@ export default function WeatherDisplay({ trail, getWeatherStr, close }){
 
     useEffect(() => {
         getWeather();
+        dragDiv("alertDiv")
     }, [])
 
     return (
-        <div className="alertW">
+        <div className="alertW" id="alertDiv">
             <h1 id="title">{trail.name}</h1>
             <div className="alert-content weatherDisplay">
                 <div>
