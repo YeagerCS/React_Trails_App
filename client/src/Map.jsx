@@ -27,7 +27,7 @@ export default function Map({ location, close, dragDiv }){
         mapboxgl.accessToken = accessToken;
         const map = new mapboxgl.Map({
             container: mapContainerRef.current,
-            style: 'mapbox://styles/mapbox/streets-v11',
+            style: 'mapbox://styles/mapbox/streets-v12',
             center: [longitude, latitude],
             zoom: 14
         });
@@ -65,7 +65,7 @@ export default function Map({ location, close, dragDiv }){
             }
           );
         });
-      }
+    }
       
         function initMap() {
             console.log("Map created")
