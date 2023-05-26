@@ -146,7 +146,7 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
         <div className="mainDiv container">
             <div className="d-flex flex-row justify-content-between flex-wrap">
                 <form className="flex-grow-1 gap-1 flex-column d-flex me-5 mt-2">
-                <label htmlFor="trailName">{t["name"]}</label>
+                <label htmlFor="trailName">{t["name"]}</label> {console.log(t)}
                 <input type="text" name="trailName" id="trailName" className="boxStyle" value={trailName} onChange={e => setTrailName(e.target.value)}/>
                 <label htmlFor="trailDate">{t["excursionDate"]}</label>
                 <input type="date" name="trailDate" id="trailDate" className="boxStyle" value={trailDate} onChange={e => setTrailDate(e.target.value)}/>
@@ -154,7 +154,7 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
 
                 <input type="time" name="trailTime" id="trailTime" placeholder="00:00..." className="boxStyle" value={trailTime} onChange={e => setTrailTime(e.target.value)}/>         
                 <label htmlFor="destination">{t["destination"]}</label>
-                <input type="text" name="destination" id="destination" placeholder="zB. Berlin" className="boxStyle" value={destination} onChange={e => setDestination(e.target.value)} />
+                <input type="text" name="destination" id="destination" placeholder={t["destExample"]} className="boxStyle" value={destination} onChange={e => setDestination(e.target.value)} />
                 
 
                 <button className="btnStyle" onClick={handleAddTrails}>{t["submit"]}</button>

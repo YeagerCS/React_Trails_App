@@ -10,7 +10,8 @@
         "e404message": "Unfortunately, there are no trails on this page!",
         "e404back": "Go Back",
         "dateError": "Date can't be in the past",
-        "timeError": "Invalid time format"
+        "timeError": "Invalid time format",
+        "destExample": "e.g. London"
     },
     "de":{
         "name": "Name",
@@ -23,7 +24,8 @@
         "e404message": "Leider gibt es auf dieser Seite keine Wanderwege!",
         "e404back": "Zurück",
         "dateError": "Date kann nicht in der Vergangenheit liegen",
-        "timeError": "Ungültiges Zeitformat"
+        "timeError": "Ungültiges Zeitformat",
+        "destExample": "z.B. Berlin"
     },
     "fr":{
         "name": "Nom",
@@ -36,7 +38,8 @@
         "e404message": "Malheureusement, il n'y a pas de sentiers sur cette page!",
         "e404back": "Retour",
         "dateError": "La date ne peut pas être dans le passé",
-        "timeError": "Format d'heure non valide"
+        "timeError": "Format d'heure non valide",
+        "destExample": "par ex. Paris"
     },
     "sq":{
         "name": "Emri",
@@ -49,7 +52,8 @@
         "e404message": "Na vjen keq, nuk ka asnjë shkëmbim në këtë faqe!",
         "e404back": "Kthehu",
         "dateError": "Data nuk mund të jetë në të kaluarën",
-        "timeError": "Format i pavlefshëm i kohës"
+        "timeError": "Format i pavlefshëm i kohës",
+        "destExample": "psh Tirana"
     },
     "ar":{
         "name": "الاسم",
@@ -62,6 +66,7 @@
         "e404message": "عذرًا، لا توجد مسارات في هذه الصفحة!",
         "e404back": "العودة",
         "dateError": "لا يمكن أن يكون التاريخ في الماضي",
-        "timeError": "تنسيق الوقت غير صالح"
+        "timeError": "تنسيق الوقت غير صالح",
+        "destExample": "على سبيل المثال دبي"
     }
 }
