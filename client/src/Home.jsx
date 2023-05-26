@@ -11,7 +11,7 @@ const apikey = "621e2c097166ed6ba8f64cbed0173994"
 
 
 
-export function Home({t, getLanguage}){
+export function Home({t, getLanguage, dragDiv}){
    
     const [displayDialog, setDisplayDialog] = useState(false)
     const [selectedTrail, setSelectedTrail] = useState([])
@@ -30,19 +30,7 @@ export function Home({t, getLanguage}){
 
     
 
-    // function getCurrentLocation() {
-    //     return new Promise((resolve, reject) => {
-    //       navigator.geolocation.getCurrentPosition(
-    //         position => {
-    //           const { latitude, longitude } = position.coords;
-    //           resolve({ latitude, longitude });
-    //         },
-    //         error => {
-    //           reject(error);
-    //         }
-    //       );
-    //     });
-    // }
+    
 
     function fetchWeather(date, time, _destination) {
         const unixTimestamp = "1970-01-01T";
@@ -93,11 +81,11 @@ export function Home({t, getLanguage}){
 
     return(
         <>
-            {weatherDisplay && <WeatherDisplay close={() => setWeatherDisplay(false)} trail={selectedTrail} getWeatherStr={getWeatherStr}/>}
+            {weatherDisplay && <WeatherDisplay close={() => setWeatherDisplay(false)} trail={selectedTrail} getWeatherStr={getWeatherStr} dragDiv={dragDiv}/>}
             {displayDialog[0] && <Dialog closeAlert={() => setDisplayDialog([false, []])} message={displayDialog[1]}/>}
             <div id="HomeDiv">
                 <Header getLanguage={getLanguage}/>
-                <TrailsForm t={t} setSelected={setSelected} getWeatherStr={getWeatherStr} getFormattedDate={getFormattedDate} setDisplayDialog={setDisplayDialog}/>
+                <TrailsForm t={t} setSelected={setSelected} getWeatherStr={getWeatherStr} getFormattedDate={getFormattedDate} setDisplayDialog={setDisplayDialog} dragDiv={dragDiv}/>
             </div>
         </> 
     )

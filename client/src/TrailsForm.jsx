@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { TrailsTable } from "./TrailsTable";
 import React from "react"
 import _translations from "./translations.json"
+import { useRef } from 'react';
 
-export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, setDisplayDialog }){
+
+export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, setDisplayDialog, dragDiv }){
     const [trailName, setTrailName] = useState("")
     const [trailDate, setTrailDate] = useState("")
     const [trailTime, setTrailTime] = useState("")
@@ -116,6 +118,17 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
         }
     }
 
+
+    useEffect(() => {
+        // if(localStorage.getItem("LANG") === "ar"){
+        //     console.log(localStorage.getItem("LANG"));
+        //     for(let i = 0; i < document.querySelectorAll("p").length; i++){
+        //         document.getElementsByTagName("p")[i].style.textAlign = "right";
+        //     }
+        // }
+
+    }, [t])
+
     useEffect(() => {
         const lastUpdate = localStorage.getItem("LAST_W_UPDATE")
 
@@ -142,6 +155,8 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
        return updatedTrails;
     }
 
+    
+
     return(
         <div className="mainDiv container">
             <div className="d-flex flex-row justify-content-between flex-wrap">
@@ -159,7 +174,7 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
 
                 <button className="btnStyle" onClick={handleAddTrails}>{t["submit"]}</button>
                 </form>
-                <TrailsTable sortByName={sortByName} sortByDate={sortByDate} t={t} trails={trails} getFormattedDate={getFormattedDate} handleDeleteTrails={handleDeleteTrails} setSelected={setSelected}/>
+                <TrailsTable sortByName={sortByName} sortByDate={sortByDate} t={t} trails={trails} getFormattedDate={getFormattedDate} handleDeleteTrails={handleDeleteTrails} setSelected={setSelected} dragDiv={dragDiv}/>
             </div>
         </div>
     )
