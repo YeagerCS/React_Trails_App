@@ -57,7 +57,7 @@ export default function Map({ location, close, dragDiv }){
               resolve({ latitude, longitude });
             },
             error => {
-              reject(error);
+              reject(error); 
             }
           );
         });

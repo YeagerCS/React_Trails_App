@@ -1,14 +1,26 @@
 import React, { useState } from 'react';
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+//import fire from './fire';   
 import "./styles.css"
 
 const LoginPopup = ({ handleTogglePopup }) => {
-  const [username, setUsername] = useState('');
+  
+    const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = () => {
-    // Handle the login logic here
-    
-    
+    const auth = getAuth();
+    signInWithEmailAndPassword(auth, username, password)
+  .then((userCredential) => {
+    console.log("logged in")
+    const user = userCredential.user;
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+  });
+        
     handleTogglePopup();
   };
 
@@ -18,11 +30,13 @@ const LoginPopup = ({ handleTogglePopup }) => {
         <h2>Login</h2>
         <form>
           <input
+            id="email"
             type="text"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}/>
           <input
+            id="password"
             type="password"
             placeholder="Password"
             value={password}
