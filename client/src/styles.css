@@ -251,9 +251,8 @@ nav div{
 }
 
 #mapClose{
-    float: right;
-    position: absolute;
-    z-index: 100;
+    float: left;
+    z-index: 100; 
 }
 
 .popup-overlay {
@@ -303,6 +302,13 @@ nav div{
     background-color: #dc3545;
     margin-left: 10px;
   }
+  
+  #mapNav{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+
 
   .RegistartionsButton{
     padding: 8px 12px;
@@ -312,4 +318,4 @@ nav div{
     border-radius: 4px;
     cursor: pointer;
   }
-  
+
