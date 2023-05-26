@@ -5,6 +5,7 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import _translations from "./translations.json"
 import { useEffect, useState } from "react";
 import Registration from "./Registration";
+import { collection, getDocs } from 'firebase/firestore';
 
 
 export default function App(){

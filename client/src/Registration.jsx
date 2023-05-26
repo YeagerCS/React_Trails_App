@@ -1,13 +1,24 @@
 import React, { useState } from 'react';
 import "./styles.css"
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function Registration({ }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleregistration = () => {
-    // Handle the login logic here
-    
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, username, password)
+  .then((userCredential) => {
+    console.log("registered")
+    const user = userCredential.user;
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+  });
   };
 
   return (
@@ -27,7 +38,7 @@ export default function Registration({ }) {
             value={password}
             onChange={(e) => setPassword(e.target.value)}/>
             <br />
-          <button className='RegistartionsButton' type="button" onClick={handleregistration}>Register</button>
+          <button className='RegistartionsButton' type="button" onSubmit={handleregistration} onClick={handleregistration}>Register</button>
           <a href='/'><button className='CloseButton' type="button">Close</button></a>
         </form>
       </div>
