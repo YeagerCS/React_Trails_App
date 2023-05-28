@@ -4,21 +4,13 @@ import Dialog from "./Dialog";
 import WeatherDisplay from "./WeatherDisplay";
 import { Header } from "./Header";
 import { TrailsForm } from "./TrailsForm";
-import LoginPopup from "./Login";
+import { signOut } from "firebase/auth";
+import { auth } from "./Auth/fire";
 
 
 const apikey = "621e2c097166ed6ba8f64cbed0173994"
 
 export function Home({t, getLanguage, dragDiv}){
-
-    const [isPopupOpen, setIsPopupOpen] = useState(true);
-
-
-  
-    const handleTogglePopup = () => {
-      setIsPopupOpen(!isPopupOpen);
-    };
-   
     const [displayDialog, setDisplayDialog] = useState(false)
     const [selectedTrail, setSelectedTrail] = useState([])
     const [weatherDisplay, setWeatherDisplay] = useState(false)
@@ -32,6 +24,11 @@ export function Home({t, getLanguage, dragDiv}){
         const formattedDate = `${day < 10 ? '0' + day : day}.${month < 10 ? '0' + month : month}.${year}`;
       
         return formattedDate;
+    }
+
+    function signOutUser(){
+        signOut(auth)
+        setDisplayDialog([true, "Signed out."])
     }
 
     function fetchWeather(date, time, _destination) {
@@ -84,10 +81,9 @@ export function Home({t, getLanguage, dragDiv}){
             {weatherDisplay && <WeatherDisplay close={() => setWeatherDisplay(false)} trail={selectedTrail} getWeatherStr={getWeatherStr} dragDiv={dragDiv}/>}
             {displayDialog[0] && <Dialog closeAlert={() => setDisplayDialog([false, []])} message={displayDialog[1]}/>}
             <div id="HomeDiv">
-                <Header getLanguage={getLanguage}/>
+                <Header getLanguage={getLanguage} signOutUser={signOutUser}/>
                 <TrailsForm t={t} setSelected={setSelected} getWeatherStr={getWeatherStr} getFormattedDate={getFormattedDate} setDisplayDialog={setDisplayDialog} dragDiv={dragDiv}/>
             </div>
-            <button onClick={handleTogglePopup}>Logout</button>{isPopupOpen && <LoginPopup handleTogglePopup={handleTogglePopup} />}
         </> 
     )
 }
