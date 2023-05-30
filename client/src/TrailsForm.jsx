@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { TrailsTable } from "./TrailsTable";
 import React from "react"
 import _translations from "./translations.json"
-import { useRef } from 'react';
 import { collection, addDoc } from "firebase/firestore";
-import { returnDB } from "./fire" 
+import { db } from "./Auth/fire" 
+import { useAuth } from './Auth/checkAuth';
 
 
 export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, setDisplayDialog, dragDiv }){
@@ -20,13 +20,15 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
         if(localStorage.getItem("TRAILS")){
             const trailsState = JSON.parse(localStorage.getItem("TRAILS"))
             let sortedTrails = trailsState.sort((x, y) => (
-            new Date(y.date) - new Date(x.date)
+                new Date(y.date) - new Date(x.date)
             ));
 
             return checkExpiration(sortedTrails)
         } 
         return []
     })
+    const user = useAuth()
+
 
     function checkExpiration(inpTrails){
         const updatedTrails = inpTrails.map(trail => {
@@ -45,7 +47,7 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
         const timeValid = timeRegex.test(trailTime)
 
         e.preventDefault()
-        if(dateValid && timeValid){
+        if(dateValid && timeValid && user){
             const weatherStrArr = await getWeatherStr(trailDate, trailTime, destination)
             if(weatherStrArr == 404){
                 setDisplayDialog([true, destination + " is not a valid city."])
@@ -61,7 +63,7 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
                 ];
             })
            try {
-             const docRef = await addDoc(collection(returnDB(), "trails"), {
+             const docRef = await addDoc(collection(db, "trails"), {
                name: trailName,
                date: trailDate,
                isCurrent: true,
@@ -70,15 +72,19 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
                destination: destination
              });
              console.log("Document written with ID: ", docRef.id);
-             } catch (e) {
+            } catch (e) {
                 console.error("Error adding document: ", e);
-              }
+            }
             setTrails(current => sortDates([...current]))
             setTrailDate("")
             setTrailName("")
             setTrailTime("")
             setDestination("")
         } else{
+            if(!user){
+                setDisplayDialog([true, "You're not logged in"])
+                return
+            }
             const dateInvalidity = dateValid ? "" : t["dateError"]
             const timeInvalidity = timeValid ? "" : t["timeError"]
             const error = dateInvalidity + "" + (timeInvalidity && dateInvalidity && " / ") + timeInvalidity
@@ -132,7 +138,6 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
             setNamesSorted(true)
         }
     }
-
 
     useEffect(() => {
         // if(localStorage.getItem("LANG") === "ar"){
