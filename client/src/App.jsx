@@ -1,13 +1,13 @@
 import { Home } from "./Home";
 import NotFound from "./NotFound";
 import "./styles.css"
-import {BrowserRouter, Routes, Route, useNavigate} from 'react-router-dom'
+import {BrowserRouter, Routes, Route, useNavigate, Navigate, useAsyncError} from 'react-router-dom'
 import _translations from "./translations.json"
 import { useEffect, useState } from "react";
 import Registration from "./Auth/Registration";
 import Login from "./Auth/Login";
-import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-import { auth, googleAuthProvider } from "./Auth/fire";
+import { useAuth } from "./Auth/checkAuth";
+
 
 
 export default function App(){
@@ -31,6 +31,7 @@ export default function App(){
     } else{
       getLanguage("en")
     }
+
   }, [])
 
   function dragDiv(elemId, mapContainerRef = null){
@@ -92,13 +93,18 @@ export default function App(){
     };
   }
 
+  const isLoggedIn = useAuth()
   
 
   return (
     <>
-      <BrowserRouter>
+      <BrowserRouter> 
         <Routes>
-          <Route exact path="/" index element={<Home dragDiv={dragDiv} t={t} getLanguage={getLanguage}/>}/>
+          {isLoggedIn ? (
+            <Route exact path="/" element={<Home dragDiv={dragDiv} t={t} getLanguage={getLanguage} />} />
+          ) : (
+            <Route exact path="/" element={<Navigate to="/Login"/>} />
+          )}
           <Route path="/Registration" element={<Registration/>}/>
           <Route path="/Login" element={<Login/>}/>
           <Route path="/*" element={<NotFound t={t}/>}/>

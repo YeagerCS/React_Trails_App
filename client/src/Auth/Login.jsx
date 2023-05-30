@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, googleAuthProvider } from "./fire" 
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from './checkAuth';
 
 export default function Login({ handleGoogleLogin }) {
-  
   const navigate = useNavigate()
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -53,7 +53,6 @@ export default function Login({ handleGoogleLogin }) {
             onChange={(e) => setPassword(e.target.value)}/>
             <br />
           <button className='LoginButton' type="button" onClick={handleLogin}>Login</button>
-          <a href='/'><button className='CloseButton' type="button">Home</button></a>
           <p id='keinKontoText'>Noch kein Konto? eröffne jetzt eines <a href='/Registration'>hier</a></p>
         </form>
         <button className='googleBtn' onClick={handleGoogleLogin}><i className="fab fa-google"></i> Google</button>
