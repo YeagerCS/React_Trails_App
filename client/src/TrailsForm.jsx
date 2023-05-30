@@ -7,6 +7,7 @@ import _translations from "./translations.json"
 import { collection, addDoc } from "firebase/firestore";
 import { db } from "./Auth/fire" 
 import { useAuth } from './Auth/checkAuth';
+import { AuthCredential } from 'firebase/auth';
 
 
 export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, setDisplayDialog, dragDiv }){
@@ -69,7 +70,8 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
                isCurrent: true,
                time: trailTime,
                weather: weatherSymbols[weatherStr],
-               destination: destination
+               destination: destination,
+               user: user.email
              });
              console.log("Document written with ID: ", docRef.id);
             } catch (e) {
