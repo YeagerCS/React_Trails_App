@@ -37,7 +37,7 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
         async function fetchTrails() {
           try {
             const trailsSnapshot = await getDocs(
-              query(collection(db, "trails"), where("user", "==", user.email))
+              query(collection(db, "trails"), where("user", "==", user.uid))
             );
             const trailsData = trailsSnapshot.docs.map((doc) => doc.data());
             const updatedTrails = checkExpiration(trailsData);
@@ -79,7 +79,7 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
                time: trailTime,
                weather: weatherSymbols[weatherStr],
                destination: destination,
-               user: user.email
+               user: user.uid
              });
              console.log("Document written with ID: ", docRef.id);
             } catch (e) {
