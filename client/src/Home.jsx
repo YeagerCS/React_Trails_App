@@ -12,6 +12,7 @@ const apikey = "621e2c097166ed6ba8f64cbed0173994"
 
 export function Home({t, getLanguage, dragDiv}){
     const [displayDialog, setDisplayDialog] = useState(false)
+    const [signOutDialog, setSignOutDialog] = useState(false)
     const [selectedTrail, setSelectedTrail] = useState([])
     const [weatherDisplay, setWeatherDisplay] = useState(false)
     
@@ -27,8 +28,13 @@ export function Home({t, getLanguage, dragDiv}){
     }
 
     function signOutUser(){
-        signOut(auth)
-        setDisplayDialog([true, "Signed out."])
+        setSignOutDialog([true, "Signing out."]);
+    }
+
+    function closeSignOut(){
+        setSignOutDialog([false, []]);
+        signOut(auth);
+        localStorage.removeItem("authUser");
     }
 
     function fetchWeather(date, time, _destination) {
@@ -80,6 +86,7 @@ export function Home({t, getLanguage, dragDiv}){
         <>
             {weatherDisplay && <WeatherDisplay close={() => setWeatherDisplay(false)} trail={selectedTrail} getWeatherStr={getWeatherStr} dragDiv={dragDiv}/>}
             {displayDialog[0] && <Dialog closeAlert={() => setDisplayDialog([false, []])} message={displayDialog[1]}/>}
+            {signOutDialog[0] && <Dialog closeAlert={closeSignOut} message={signOutDialog[1]}/>}
             <div id="HomeDiv">
                 <Header getLanguage={getLanguage} signOutUser={signOutUser}/>
                 <TrailsForm t={t} setSelected={setSelected} getWeatherStr={getWeatherStr} getFormattedDate={getFormattedDate} setDisplayDialog={setDisplayDialog} dragDiv={dragDiv}/>

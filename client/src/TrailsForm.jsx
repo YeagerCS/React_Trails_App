@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { TrailsTable } from "./TrailsTable";
 import React from "react"
 import _translations from "./translations.json"
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
 import { db } from "./Auth/fire" 
 import { useAuth } from './Auth/checkAuth';
 import { AuthCredential } from 'firebase/auth';
@@ -13,22 +13,13 @@ import { AuthCredential } from 'firebase/auth';
 export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, setDisplayDialog, dragDiv }){
     const [trailName, setTrailName] = useState("")
     const [trailDate, setTrailDate] = useState("")
+    const user = useAuth()
+
     const [trailTime, setTrailTime] = useState("")
     const [datesSorted, setDatesSorted] = useState(true)
     const [namesSorted, setNamesSorted] = useState(false)
     const [destination, setDestination] = useState("")
-    const [trails, setTrails] = useState(() => {
-        if(localStorage.getItem("TRAILS")){
-            const trailsState = JSON.parse(localStorage.getItem("TRAILS"))
-            let sortedTrails = trailsState.sort((x, y) => (
-                new Date(y.date) - new Date(x.date)
-            ));
-
-            return checkExpiration(sortedTrails)
-        } 
-        return []
-    })
-    const user = useAuth()
+    const [trails, setTrails] = useState([]);
 
 
     function checkExpiration(inpTrails){
@@ -41,6 +32,23 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
         });
         return updatedTrails;
     }
+
+    useEffect(() => {
+        async function fetchTrails() {
+          try {
+            const trailsSnapshot = await getDocs(
+              query(collection(db, "trails"), where("user", "==", user.email))
+            );
+            const trailsData = trailsSnapshot.docs.map((doc) => doc.data());
+            const updatedTrails = checkExpiration(trailsData);
+            setTrails(updatedTrails);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      
+        fetchTrails();  
+    }, []);
 
     async function handleAddTrails(e){
         const timeRegex = /^(?:[01]\d|2[0-3]):[0-5]\d$/;

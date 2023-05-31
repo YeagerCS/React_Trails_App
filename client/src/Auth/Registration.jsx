@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, googleAuthProvider } from "./fire"
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from './checkAuth';
 
 export default function Registration({ handleGoogleLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-
+  
   function handleRegistration() {
     createUserWithEmailAndPassword(auth, username, password)
     .then((userCredential) => {
@@ -52,7 +53,6 @@ export default function Registration({ handleGoogleLogin }) {
             onChange={(e) => setPassword(e.target.value)}/>
             <br />
           <button className='RegistartionsButton' type="button" onClick={handleRegistration}>Register</button>
-          <a href='/'><button className='CloseButton' type="button">Home</button></a>
           <p id='keinKontoText'>Bereits ein konto? <a href="/Login">Log in</a></p>
         </form>
         <button className='googleBtn' onClick={handleGoogleLogin}><i className="fab fa-google"></i> Google</button>
