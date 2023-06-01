@@ -22,6 +22,8 @@ export function TrailsTable({ sortByName, sortByDate, t, trails, getFormattedDat
                         <th onClick={sortByDate}>{t["excursionDate"]} <strong>&#8693;</strong></th>
                         <th>{t["time"]}</th>
                         <th>{t["destination"]}</th>
+                        <th>Creator</th>
+                        <th></th>
                         <th></th>
                     </tr>
                 </thead>
