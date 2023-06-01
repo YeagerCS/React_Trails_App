@@ -1,21 +1,31 @@
 import { useNavigate } from "react-router-dom"
 import { useAuth } from "./Auth/checkAuth"
+import React, { useState } from 'react';
 
 export function Header({ getLanguage, signOutUser }){
     const navigate = useNavigate()  
     const user = useAuth()
+
+    const [selectedOption, setSelectedOption] = useState('');
+
+    const handleChange = (event) => {
+        setSelectedOption(event.target.value);
+        getLanguage(event.target.value);
+      };
 
     return(
         <header>
             <nav>   
                 <ul>
                     <div>
-                        <div className="languages">
-                            <li><button className={localStorage.getItem("LANG") == "de" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("de")}>German</button></li>
-                            <li><button className={localStorage.getItem("LANG") == "en" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("en")}>English</button></li>
-                            <li><button className={localStorage.getItem("LANG") == "sq" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("sq")}>Albanian</button></li>
-                            <li><button className={localStorage.getItem("LANG") == "fr" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("fr")}>French</button></li>
-                            <li><button className={localStorage.getItem("LANG") == "ar" ? "btn btn-primary selectedLang" : "btn btn-primary"} onClick={() => getLanguage("ar")}>Arabic</button></li>
+                        <div className="languages"> 
+                            <select className="language" value={localStorage.getItem("LANG")} onChange={handleChange}>
+                            <option className={localStorage.getItem("LANG") == "de" ? "selectedLang" : ""} value="de">German</option>
+                            <option className={localStorage.getItem("LANG") == "en" ? "selectedLang" : ""} value="en">English</option>
+                            <option className={localStorage.getItem("LANG") == "sq" ? "selectedLang" : ""} value="sq">Albanian</option>
+                            <option className={localStorage.getItem("LANG") == "fr" ? "selectedLang" : ""} value="fr">French</option>
+                            <option className={localStorage.getItem("LANG") == "ar" ? "selectedLang" : ""} value="ar">Arabic</option>
+                            </select>
                         </div>
                         {!user ? 
                             <div className="loginTools">
