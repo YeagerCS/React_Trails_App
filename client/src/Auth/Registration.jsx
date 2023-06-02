@@ -13,20 +13,18 @@ export default function Registration({ handleGoogleLogin }) {
   const [PhotoUrl, setPhotoUrl] = useState('');
   const navigate = useNavigate();
   
+
   function handleRegistration() {
     createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user;
-      //debugger;
       window.setTimeout(() => {
         addAdditionalRowsToUser(user.uid, "displayName", displayName, "emailVerfied", false, "photoURL", PhotoUrl)
           .then((_) => { 
             console.log('Additional row added to the user document successfully.' + _);
-            window.setTimeout(() => {
-              // navigate("/");
-            }, 500) ;
+            navigate("/")
           })
-      }, 1500) ;
+      }, 1000) ;
     })
     .catch((error) => {
       const errorCode = error.code;
