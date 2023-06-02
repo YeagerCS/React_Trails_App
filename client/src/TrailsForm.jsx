@@ -69,7 +69,7 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
             setTrails(current => {
                 return [
                     ...current,
-                    {id: rndID, name: trailName, date: trailDate, isCurrent: true, time: trailTime, weather: weatherSymbols[weatherStr], destination: destination}
+                    {rid: rndID, name: trailName, date: trailDate, isCurrent: true, time: trailTime, weather: weatherSymbols[weatherStr], destination: destination}
                 ];
             })
            try {
@@ -114,17 +114,16 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
             querySnapshot.forEach((doc) => {
                 deleteDoc(doc.ref)
                 .then(() => {
+                    setTrails(current => {
+                        return current.filter(trail => trail.rid !== id);
+                    });
                     console.log('Document successfully deleted!');
                 })
                 .catch((error) => {
                     console.error('Error deleting document: ', error);
                 });
             });
-
-            setTrails(current => {
-              return current.filter(trail => trail.id !== id);
-            });
-            console.log("Trail deleted successfully");
+            
         } catch (error) {
             console.error("Error deleting trail: ", error);
         }
@@ -208,7 +207,7 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
 
     return(
         <div className="mainDiv container">
-            <div className="d-flex flex-row justify-content-between flex-wrap">
+            <div className="d-flex flex-row justify-content-between">
                 <form className="flex-grow-1 gap-1 flex-column d-flex me-5 mt-2">
                 <label htmlFor="trailName">{t["name"]}</label> {console.log(t)}
                 <input type="text" name="trailName" id="trailName" className="boxStyle" value={trailName} onChange={e => setTrailName(e.target.value)}/>
