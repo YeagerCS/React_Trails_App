@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
-import { auth, googleAuthProvider } from "./fire"
+import { auth, googleAuthProvider, storage } from "./fire"
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './checkAuth';
-import { collection, addDoc, getDocs, query, where, deleteDoc, doc, setDoc, updateDoc } from "firebase/firestore";
+import { collection, addDoc, getDocs, query, where, deleteDoc, doc, updateDoc} from "firebase/firestore";
 import { db } from "./fire" 
+import { ScrollZoomHandler } from 'mapbox-gl';
+import { getDownloadURL } from 'firebase/storage';
+import { ref, uploadBytes } from 'firebase/storage';
 
 export default function Registration({ handleGoogleLogin }) {
   const [email, setEmail] = useState('');
@@ -47,6 +50,13 @@ export default function Registration({ handleGoogleLogin }) {
     }
   };
 
+  function openFileChooser(e) {
+    e.preventDefault()
+    const fileInput = document.getElementById('url');
+    fileInput.click();
+    setPhotoUrl(null)
+  }
+
   function handleGoogleLogin(){
     signInWithPopup(auth, googleAuthProvider).then(result => {
       const credenetial = GoogleAuthProvider.credentialFromResult(result)
@@ -58,6 +68,23 @@ export default function Registration({ handleGoogleLogin }) {
     }).catch(error => console.error(error))
   }
 
+
+
+  async function handleFileSelection(e){
+    e.preventDefault()
+    const selectedFile = e.target.files[0]
+
+    const storageRef = ref(storage, selectedFile.name)
+
+    try{  
+      const snapshot = await uploadBytes(storageRef, selectedFile)
+      const url = await getDownloadURL(snapshot.ref)
+      setPhotoUrl(url)
+    } catch(error){
+      console.log(error);
+    }
+    console.log(selectedFile);  
+  }
   return (
     <>
     <div className="popup-overlay">
@@ -70,12 +97,8 @@ export default function Registration({ handleGoogleLogin }) {
             placeholder="Username"
             value={displayName}
             onChange={(e) => setDisplayName(e.target.value)}/>
-            <input
-            className='boxStyle'
-            type="text"
-            placeholder="ULR"
-            value={PhotoUrl}
-            onChange={(e) => setPhotoUrl(e.target.value)}/>
+           <input type="file" name="url" id="url" onChange={handleFileSelection}/>
+           <button className='btnStyle' onClick={openFileChooser}>Choose File</button>
           <input
             className='boxStyle'
             type="text"
