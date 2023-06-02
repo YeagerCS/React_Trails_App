@@ -315,10 +315,8 @@ nav div{
 #newMapDiv{
   display: flex;
   flex-direction: column;
-  background-color:rgb(40, 41, 50);
   border: 1px rgb(0, 0, 0);
   border-radius: 5px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
   z-index: 9999;
   width: 98vw;
   justify-content: center;
