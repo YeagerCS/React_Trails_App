@@ -6,12 +6,9 @@ export function Header({ getLanguage, signOutUser }){
     const navigate = useNavigate()  
     const user = useAuth()
 
-    const [selectedOption, setSelectedOption] = useState('');
-
     const handleChange = (event) => {
-        setSelectedOption(event.target.value);
         getLanguage(event.target.value);
-      };
+    };
 
     return(
         <header>
@@ -20,11 +17,11 @@ export function Header({ getLanguage, signOutUser }){
                     <div>
                         <div className="languages"> 
                             <select className="language" value={localStorage.getItem("LANG")} onChange={handleChange}>
-                            <option className={localStorage.getItem("LANG") == "de" ? "selectedLang" : ""} value="de">German</option>
-                            <option className={localStorage.getItem("LANG") == "en" ? "selectedLang" : ""} value="en">English</option>
-                            <option className={localStorage.getItem("LANG") == "sq" ? "selectedLang" : ""} value="sq">Albanian</option>
-                            <option className={localStorage.getItem("LANG") == "fr" ? "selectedLang" : ""} value="fr">French</option>
-                            <option className={localStorage.getItem("LANG") == "ar" ? "selectedLang" : ""} value="ar">Arabic</option>
+                            <option value="de">German</option>
+                            <option value="en">English</option>
+                            <option value="sq">Albanian</option>
+                            <option value="fr">French</option>
+                            <option value="ar">Arabic</option>
                             </select>
                         </div>
                         {!user ? 
