@@ -361,6 +361,10 @@ nav div{
   font-size: 25px;
 }
 
+#url{
+  display: none;
+}
+
 .popup-overlay {
     display: flex;
     justify-content: center;
