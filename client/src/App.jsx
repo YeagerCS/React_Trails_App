@@ -7,7 +7,9 @@ import { useEffect, useState } from "react";
 import Registration from "./Auth/Registration";
 import Login from "./Auth/Login";
 import { useAuth } from "./Auth/checkAuth";
+import TrailView from "./TrailView";
 
+const apikey = "621e2c097166ed6ba8f64cbed0173994"
 
 
 export default function App(){
@@ -93,6 +95,36 @@ export default function App(){
     };
   }
 
+  function fetchWeather(date, time, _destination) {
+    const unixTimestamp = "1970-01-01T";
+
+    const selectedDate = new Date(date);
+    const selctedTime = new Date(unixTimestamp + time + ":00")
+    const timestamp = Math.floor((selectedDate.getTime() + selctedTime.getTime()) / 1000);
+    // const { latitude, longitude } = location;
+    // console.log(latitude, longitude, timestamp)
+    const url = "https://api.openweathermap.org/data/2.5/weather?q="+ _destination +"&appid=" + apikey;
+  
+    return fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if(data.cod === 200){
+            return [data.weather[0].main, Math.round(data.main.temp - 273.15)];
+        } else{
+            return data.cod
+        }
+    });
+  } 
+
+  async function getWeatherStr(date, time, destination){
+      try{
+          const weather = await fetchWeather(date, time, destination);
+          return weather; 
+      } catch(error){
+          console.error(error);
+      }
+  }
+
   const isLoggedIn = useAuth()
   
 
@@ -101,9 +133,15 @@ export default function App(){
       <BrowserRouter> 
         <Routes>
           {isLoggedIn ? (
-            <Route exact path="/" element={<Home dragDiv={dragDiv} t={t} getLanguage={getLanguage} />} />
+            <>
+              <Route exact path="/" element={<Home dragDiv={dragDiv} t={t} getLanguage={getLanguage} getWeatherStr={getWeatherStr}/>} />
+              <Route path="/View" element={<TrailView getWeatherStr={getWeatherStr}/>}/>
+            </>
           ) : (
-            <Route exact path="/" element={<Navigate to="/Login"/>} />
+            <>
+              <Route exact path="/" element={<Navigate to="/Login"/>} />
+              <Route path="/View" element={<Navigate to="/Login"/>}/>
+            </>
           )}
           <Route path="/Registration" element={<Registration/>}/>
           <Route path="/Login" element={<Login/>}/>

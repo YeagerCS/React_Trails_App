@@ -2,18 +2,25 @@ import { useState } from "react";
 
 
 import Map from "./Map"
+import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
+import TrailView from "./TrailView";
 
-export function TrailsTable({ sortByName, sortByDate, t, trails, getFormattedDate, handleDeleteTrails, setSelected, dragDiv }){
+export function TrailsTable({ sortByName, sortByDate, t, trails, getFormattedDate, handleDeleteTrails, setSelected, dragDiv, signOutUser }){
     const [displayMap, setDisplayMap] = useState([false, ""])
+    const navigate = useNavigate()
+
 
     function displayMapFR(loc){
         setDisplayMap([true, loc])
     }
 
-
+    function evaluateView(trail){
+        navigate('/View', { state: { trail } })
+    }
 
     return (
         <>
+
             {displayMap[0] && <Map location={displayMap[1]} close={() => setDisplayMap([false, ""])} dragDiv={dragDiv}/>}
             <table className="styled-table">
                 <thead> 
@@ -37,7 +44,7 @@ export function TrailsTable({ sortByName, sortByDate, t, trails, getFormattedDat
                                 <td onClick={(e) => displayMapFR(e.target.innerText)}>{trail.destination} 📌</td>
                                 <td onClick={(e) => displayMapFR(e.target.innerText)}>{trail.destination} 📌</td>
                                 <td><button onClick={e =>  handleDeleteTrails(e, trail.id)} className="btn btn-dark btn-outline-danger">{t["delete"]}</button></td>
-                                <td><button onClick={e =>  handleDeleteTrails(e, trail.id)} className="btn btn-dark btn-outline-danger">View</button></td>
+                                <td><button className="btn btn-primary" onClick={() => evaluateView(trail)}>View</button></td>
                             </tr> 
                         </>
                     ))}

@@ -8,9 +8,8 @@ import { signOut } from "firebase/auth";
 import { auth } from "./Auth/fire";
 
 
-const apikey = "621e2c097166ed6ba8f64cbed0173994"
 
-export function Home({t, getLanguage, dragDiv}){
+export function Home({t, getLanguage, dragDiv, getWeatherStr}){
     const [displayDialog, setDisplayDialog] = useState(false)
     const [signOutDialog, setSignOutDialog] = useState(false)
     const [selectedTrail, setSelectedTrail] = useState([])
@@ -37,35 +36,7 @@ export function Home({t, getLanguage, dragDiv}){
         localStorage.removeItem("authUser");
     }
 
-    function fetchWeather(date, time, _destination) {
-        const unixTimestamp = "1970-01-01T";
-
-        const selectedDate = new Date(date);
-        const selctedTime = new Date(unixTimestamp + time + ":00")
-        const timestamp = Math.floor((selectedDate.getTime() + selctedTime.getTime()) / 1000);
-        // const { latitude, longitude } = location;
-        // console.log(latitude, longitude, timestamp)
-        const url = "https://api.openweathermap.org/data/2.5/weather?q="+ _destination +"&appid=" + apikey;
-      
-        return fetch(url)
-          .then(response => response.json())
-          .then(data => {
-            if(data.cod === 200){
-                return [data.weather[0].main, Math.round(data.main.temp - 273.15)];
-            } else{
-                return data.cod
-            }
-        });
-    }
-
-    async function getWeatherStr(date, time, destination){
-        try{
-            const weather = await fetchWeather(date, time, destination);
-            return weather; 
-        } catch(error){
-            console.error(error);
-        }
-    }
+    
 
 
     useEffect(() => {
@@ -89,7 +60,7 @@ export function Home({t, getLanguage, dragDiv}){
             {signOutDialog[0] && <Dialog closeAlert={closeSignOut} message={signOutDialog[1]}/>}
             <div id="HomeDiv">
                 <Header getLanguage={getLanguage} signOutUser={signOutUser}/>
-                <TrailsForm t={t} setSelected={setSelected} getWeatherStr={getWeatherStr} getFormattedDate={getFormattedDate} setDisplayDialog={setDisplayDialog} dragDiv={dragDiv}/>
+                <TrailsForm t={t} setSelected={setSelected} getWeatherStr={getWeatherStr} getFormattedDate={getFormattedDate} setDisplayDialog={setDisplayDialog} dragDiv={dragDiv} signOutUser={closeSignOut}/>
             </div>
         </> 
     )

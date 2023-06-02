@@ -2,10 +2,11 @@ import { addHours, parse, subHours, format } from "date-fns";
 import { useEffect, useState } from "react";
 import { weatherSymbols } from "./weatherSymbols";
 
-export default function WeatherDisplay({ trail, getWeatherStr, close, dragDiv }){
+export default function WeatherDisplay({ trail, getWeatherStr, close = null, dragDiv = null }){
     const [weatherMinus2h, setWeatherMinus2h] = useState([])
     const [weatherCurrent, setWeatherCurrent] = useState([])
     const [weatherPlus2h, setWeatherPlus2h] = useState([])
+    const [classNames, setClassNames] = useState(["alertW", "alert-content weatherDisplay"])
 
     async function getWeather(){
         const timeStr = trail.time;
@@ -35,13 +36,14 @@ export default function WeatherDisplay({ trail, getWeatherStr, close, dragDiv })
 
     useEffect(() => {
         getWeather();
-        dragDiv("alertDiv")
+        dragDiv && dragDiv("alertDiv")
+        !close && setClassNames(["nalertW", "nalert-content nweatherDisplay"])
     }, [])
 
     return (
-        <div className="alertW" id="alertDiv">
+        <div className={classNames[0]} id="alertDiv">
             <h1 id="title">{trail.name}</h1>
-            <div className="alert-content weatherDisplay">
+            <div className={classNames[1]}>
                 <div>
                     <h1>{weatherSymbols[weatherMinus2h[0]]}</h1>
                     <p>{weatherMinus2h[1]}° <em>{weatherMinus2h[2]}</em></p>
@@ -55,7 +57,7 @@ export default function WeatherDisplay({ trail, getWeatherStr, close, dragDiv })
                     <p>{weatherPlus2h[1]}° <em>{weatherPlus2h[2]}</em></p>
                 </div>
             </div>
-            <button onClick={close} className="btn btn-dark btn-outline-secondary   ">Close</button>
+            {close && <button onClick={close} className="btn btn-dark btn-outline-secondary">Close</button>}
         </div>
     )
 }

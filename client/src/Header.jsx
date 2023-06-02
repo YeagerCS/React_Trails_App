@@ -1,10 +1,17 @@
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useAuth } from "./Auth/checkAuth"
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { signOut } from "firebase/auth";
+import { auth } from "./Auth/fire";
 
-export function Header({ getLanguage, signOutUser }){
+export function Header({ getLanguage, signOutUser = null }){
     const navigate = useNavigate()  
     const user = useAuth()
+
+    function signOutUsr(){
+        signOut(auth)
+        localStorage.removeItem("authUser")
+    }
 
     const handleChange = (event) => {
         getLanguage(event.target.value);
@@ -15,6 +22,7 @@ export function Header({ getLanguage, signOutUser }){
             <nav>   
                 <ul>
                     <div>
+                        <div><Link to="/"><button className="btnStyle">Home</button></Link></div>
                         <div className="languages"> 
                             <select className="language" value={localStorage.getItem("LANG")} onChange={handleChange}>
                             <option value="de">German</option>
@@ -32,7 +40,7 @@ export function Header({ getLanguage, signOutUser }){
                             :
                             <div className="loginTools">
                                 <div className="userCred">&nbsp;{user.email}&nbsp;</div>
-                                <li><button className="btnStyle" onClick={signOutUser}>Sign Out</button></li>
+                                <li><button className="btnStyle" onClick={() => signOutUser ? signOutUser() : signOutUsr()}>Sign Out</button></li>
                             </div>
                         }
                     </div>
