@@ -113,6 +113,7 @@ strong{
     z-index: 9999;
   }
 
+
   .alert p {
     margin: 0;
     font-size: 16px;
@@ -149,6 +150,21 @@ strong{
     z-index: 9999;
   }
 
+  .nweatherDisplay{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  .nalertW{
+    width: 98vw;
+    padding: 20px;
+    background-color:rgb(107, 215, 255);
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    z-index: 9999;
+  }
+
   .alertW p {
     margin: 0;
     text-align: center;
@@ -156,15 +172,23 @@ strong{
     font-weight: bold;
   }
 
-  .alertW h1{
+  .nalertW p{
+    font-size: 50px;
+  }
+
+  .alertW h1, .nalertW h1{
     color: whitesmoke;
   }
 
-  .alertW #title{
+  .nalertW h1:not(#title){
+    font-size: 200px;
+  }
+
+  .alertW #title, .nalertW #title{
     color: blue;
   }
 
-  .alertW {
+  .alertW, .nalertW{
     color: blue;
   }
   
@@ -277,6 +301,30 @@ nav div{
     z-index: 99;
 }
 
+#newMap{
+  display: flex;
+  width: 1000px;
+  height: 600px;
+  border-radius: 2em;
+  z-index: 99;
+  justify-self: center;
+  align-self: center;
+  
+}
+
+#newMapDiv{
+  display: flex;
+  flex-direction: column;
+  background-color:rgb(40, 41, 50);
+  border: 1px rgb(0, 0, 0);
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  width: 98vw;
+  justify-content: center;
+  align-items: center;
+}
+
 #mapDiv{
     position: fixed;
     top: 50%;
@@ -307,6 +355,11 @@ nav div{
   z-index: 9999;
 }
 
+#newLocationBtn, #newLocationRoute{
+  width: 300px;
+  height: 50px;
+  font-size: 25px;
+}
 
 .popup-overlay {
     display: flex;

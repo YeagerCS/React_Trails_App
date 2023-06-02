@@ -1,9 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-export default function Map({ location, close, dragDiv }){
+export default function Map({ location, close = null, dragDiv = null }){
     const mapContainerRef = useRef(null)
     const [routingView, setRoutingView] = useState(false)
+    const [idN, setIDN] = useState(["map", "mapDiv"])
 
     async function fetchLocation(){
         const accessToken = 'pk.eyJ1IjoibWlsa3NoYWtlcjc3NSIsImEiOiJjbGk0NmJ6ZnMwY2s4M2ZwY20xOHNxenZnIn0.rCPRzvm_TtisulAPpl4_0A';
@@ -41,7 +42,8 @@ export default function Map({ location, close, dragDiv }){
     }
 
     useEffect(() => {
-        dragDiv("mapDiv", mapContainerRef)
+        dragDiv && dragDiv("mapDiv", mapContainerRef)
+        !close && setIDN(["newMap", "newMapDiv"])
     }, []);
     
 
@@ -148,13 +150,13 @@ export default function Map({ location, close, dragDiv }){
       
 
     return(
-        <div id="mapDiv">
+        <div id={idN[1]}>
             <div id="mapNav">
-                <button className="btn btnStyle" onClick={() => setRoutingView(false)}>Location Pin</button>
-                <button className="btn btnStyle" onClick={() => setRoutingView(true)}>Location Route</button>
+                <button className="btn btnStyle" id={!close && "newLocationBtn"} onClick={() => setRoutingView(false)}>Location Pin</button>
+                <button className="btn btnStyle" id={!close && "newLocationRoute"} onClick={() => setRoutingView(true)}>Location Route</button>
             </div><br />
-            <div ref={mapContainerRef} id="map"/><br />
-            <button id="mapClose" className="btn btn-outline-danger btn-dark" onClick={close}>Close</button>
+            <div ref={mapContainerRef} id={idN[0]}/><br />
+            {close && <button id="mapClose" className="btn btn-outline-danger btn-dark" onClick={close}>Close</button>}
         </div>
     )
 }

@@ -10,7 +10,7 @@ import { useAuth } from './Auth/checkAuth';
 import { AuthCredential } from 'firebase/auth';
 
 
-export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, setDisplayDialog, dragDiv }){
+export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, setDisplayDialog, dragDiv, signOutUser }){
     const [trailName, setTrailName] = useState("")
     const [trailDate, setTrailDate] = useState("")
     const user = useAuth()
@@ -103,19 +103,6 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
             setDisplayDialog([true, error])
         }
 
-    }
-
-    async function getDocumentIdByRid(rid) {
-        try {
-          const q = query(collection(db, "trails"), where("rid", "==", rid));
-          const trailsSnapshot = await getDocs(q);
-            console.log(trailsSnapshot);
-          const documentIds = trailsSnapshot.docs.map((doc) => doc.id);
-          return documentIds;
-        } catch (error) {
-          console.error("Error getting trail documents: ", error);
-          return [];
-        }
     }
 
     async function handleDeleteTrails(e, id) {
@@ -236,7 +223,7 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
 
                 <button className="btnStyle" onClick={handleAddTrails}>{t["submit"]}</button>
                 </form>
-                <TrailsTable sortByName={sortByName} sortByDate={sortByDate} t={t} trails={trails} getFormattedDate={getFormattedDate} handleDeleteTrails={handleDeleteTrails} setSelected={setSelected} dragDiv={dragDiv}/>
+                <TrailsTable sortByName={sortByName} sortByDate={sortByDate} t={t} trails={trails} getFormattedDate={getFormattedDate} handleDeleteTrails={handleDeleteTrails} setSelected={setSelected} dragDiv={dragDiv} signOutUser={signOutUser}/>
             </div>
         </div>
     )
