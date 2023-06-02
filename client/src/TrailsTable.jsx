@@ -22,6 +22,8 @@ export function TrailsTable({ sortByName, sortByDate, t, trails, getFormattedDat
                         <th onClick={sortByDate}>{t["excursionDate"]} <strong>&#8693;</strong></th>
                         <th>{t["time"]}</th>
                         <th>{t["destination"]}</th>
+                        <th>Creator</th>
+                        <th></th>
                         <th></th>
                     </tr>
                 </thead>
@@ -33,7 +35,9 @@ export function TrailsTable({ sortByName, sortByDate, t, trails, getFormattedDat
                                 <td>{getFormattedDate(trail.date.toString())}</td>
                                 <td>{trail.time}</td>
                                 <td onClick={(e) => displayMapFR(e.target.innerText)}>{trail.destination} 📌</td>
+                                <td onClick={(e) => displayMapFR(e.target.innerText)}>{trail.destination} 📌</td>
                                 <td><button onClick={e =>  handleDeleteTrails(e, trail.id)} className="btn btn-dark btn-outline-danger">{t["delete"]}</button></td>
+                                <td><button onClick={e =>  handleDeleteTrails(e, trail.id)} className="btn btn-dark btn-outline-danger">View</button></td>
                             </tr> 
                         </>
                     ))}

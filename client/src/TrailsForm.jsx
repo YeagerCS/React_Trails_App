@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { TrailsTable } from "./TrailsTable";
 import React from "react"
 import _translations from "./translations.json"
-import { collection, addDoc, getDocs, query, where } from "firebase/firestore";
+import { collection, addDoc, getDocs, query, where, deleteDoc, doc } from "firebase/firestore";
 import { db } from "./Auth/fire" 
 import { useAuth } from './Auth/checkAuth';
 import { AuthCredential } from 'firebase/auth';
@@ -64,11 +64,12 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
             }
             const weatherStr = weatherStrArr[0]
             console.log(weatherSymbols[weatherStr]);
-            
+            const rndID = crypto.randomUUID()
+
             setTrails(current => {
                 return [
                     ...current,
-                    {id: crypto.randomUUID(), name: trailName, date: trailDate, isCurrent: true, time: trailTime, weather: weatherSymbols[weatherStr], destination: destination}
+                    {id: rndID, name: trailName, date: trailDate, isCurrent: true, time: trailTime, weather: weatherSymbols[weatherStr], destination: destination}
                 ];
             })
            try {
@@ -79,7 +80,8 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
                time: trailTime,
                weather: weatherSymbols[weatherStr],
                destination: destination,
-               user: user.uid
+               user: user.uid,
+               rid: rndID
              });
              console.log("Document written with ID: ", docRef.id);
             } catch (e) {
@@ -103,11 +105,42 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
 
     }
 
-    function handleDeleteTrails(e, id){
-        e.preventDefault()
-        setTrails(current => {
-            return current.filter(trail => trail.id !== id)
-        })
+    async function getDocumentIdByRid(rid) {
+        try {
+          const q = query(collection(db, "trails"), where("rid", "==", rid));
+          const trailsSnapshot = await getDocs(q);
+            console.log(trailsSnapshot);
+          const documentIds = trailsSnapshot.docs.map((doc) => doc.id);
+          return documentIds;
+        } catch (error) {
+          console.error("Error getting trail documents: ", error);
+          return [];
+        }
+    }
+
+    async function handleDeleteTrails(e, id) {
+        e.preventDefault();
+        try {
+            const querySnapshot = await getDocs(
+                query(collection(db, "trails"), where("rid", "==", id))
+            );
+            querySnapshot.forEach((doc) => {
+                deleteDoc(doc.ref)
+                .then(() => {
+                    console.log('Document successfully deleted!');
+                })
+                .catch((error) => {
+                    console.error('Error deleting document: ', error);
+                });
+            });
+
+            setTrails(current => {
+              return current.filter(trail => trail.id !== id);
+            });
+            console.log("Trail deleted successfully");
+        } catch (error) {
+            console.error("Error deleting trail: ", error);
+        }
     }
 
     function sortByDate(){

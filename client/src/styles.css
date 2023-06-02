@@ -199,10 +199,52 @@ nav div{
     gap: 1em;
 }
 
-.selectedLang{
-    font-weight: bold;
-    color: yellow;
+.languages {
+  display: flex;
+  align-items: center;
 }
+
+.language {
+  padding: 8px 12px;
+  border-radius: 4px;
+  background-color: deepskyblue;
+  color: white;
+  border: none;
+  font-size: 18px;
+  width: 300px;
+  cursor: pointer;
+  position: relative;
+}
+
+.language::after {
+  content: "\\25BC";
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+}
+
+.language option {
+  padding: 8px 12px;
+  background-color: rgb(52, 53, 65);
+  box-shadow: 4px 2px 5px 0px rgba(0,0,0,0.75);
+  color: deepskyblue;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.language option:hover {
+  background-color: rgb(52, 53, 65);
+}
+
+.language option:checked {
+  background-color: rgb(52, 53, 65);
+  color: lightgray;
+  font-weight: bold;
+}
+
 
 @media only screen and (max-width: 767px){
 }
