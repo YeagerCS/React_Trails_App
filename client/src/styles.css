@@ -387,6 +387,20 @@ nav div{
     width: 100%;
   }
 
+  #pp{
+    width: 45px;
+    height: 45px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    transition: 0.9s;
+    border: 2px solid deepskyblue;
+  }
+
+  #pp:hover{
+    transform: scale(1.08);
+    cursor: pointer;
+  }
+
   
   .popup input,
   .popup button {

@@ -17,6 +17,11 @@ export function Header({ getLanguage, signOutUser = null }){
         getLanguage(event.target.value);
     };
 
+    useEffect(() => {
+        document.getElementById("pp").src = user.photoURL;
+        alert(user.photoURL)
+    }, [])
+
     return(
         <header>
             <nav>   
@@ -39,7 +44,7 @@ export function Header({ getLanguage, signOutUser = null }){
                             </div>
                             :
                             <div className="loginTools">
-                                <img src={user.photoURL} alt="pb" className="profilePic"/>
+                                <img src="" className="profilePic" id="pp"/>
                                 <div className="userCred">&nbsp;{user.email}&nbsp;</div>
                                 <li><button className="btnStyle" onClick={() => signOutUser ? signOutUser() : signOutUsr()}>Sign Out</button></li>
                             </div>

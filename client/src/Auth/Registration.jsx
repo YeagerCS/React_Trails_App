@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { GoogleAuthProvider, createUserWithEmailAndPassword, signInWithPopup, updateProfile } from "firebase/auth";
 import { auth, googleAuthProvider, storage } from "./fire"
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './checkAuth';
@@ -9,25 +9,22 @@ import { ScrollZoomHandler } from 'mapbox-gl';
 import { getDownloadURL } from 'firebase/storage';
 import { ref, uploadBytes } from 'firebase/storage';
 
+const defaultPp = "https://firebasestorage.googleapis.com/v0/b/m248-projekt.appspot.com/o/DEFAULT_PROFILE_PICTURE_DEADPOOL_45x45.png?alt=media&token=665f04be-c2cd-4409-9f05-612be0eb7d0a&_gl=1*1k459ln*_ga*MzU4ODg1MDgxLjE2ODUxMDUwMzM.*_ga_CW55HF8NVT*MTY4NTcwNjI1My42LjEuMTY4NTcxMzUxNy4wLjAuMA.."
+
 export default function Registration({ handleGoogleLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [displayName, setDisplayName] = useState('');
-  const [PhotoUrl, setPhotoUrl] = useState('');
+  const [PhotoUrl, setPhotoUrl] = useState(null);
   const navigate = useNavigate();
   
 
-  function handleRegistration() {
+  async function handleRegistration() {
     createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
+    .then(async (userCredential) => {
       const user = userCredential.user;
-      window.setTimeout(() => {
-        addAdditionalRowsToUser(user.uid, "displayName", displayName, "emailVerfied", false, "photoURL", PhotoUrl)
-          .then((_) => { 
-            console.log('Additional row added to the user document successfully.' + _);
-            navigate("/")
-          })
-      }, 1000) ;
+      await updateProfilePic(user)
+      await addAdditionalRowsToUser(user.uid, "displayName", displayName, "photoURL", PhotoUrl, "emailVerified", false)
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -35,6 +32,14 @@ export default function Registration({ handleGoogleLogin }) {
       // ..
     })
   };
+
+  async function updateProfilePic(userCred){
+    if (PhotoUrl !== null) {
+      await updateProfile(userCred, { photoURL: PhotoUrl });
+    } else{
+      await updateProfile(userCred, { photoURL: defaultPp} )
+    }
+  }
 
   const addAdditionalRowsToUser = async (userId, fieldName, fieldValue, fieldName2, fieldValue2, fieldName3, fieldValue3) => {
     const updatedData = {
@@ -54,8 +59,9 @@ export default function Registration({ handleGoogleLogin }) {
     e.preventDefault()
     const fileInput = document.getElementById('url');
     fileInput.click();
-    setPhotoUrl(null)
+    setPhotoUrl(true)
   }
+
 
   function handleGoogleLogin(){
     signInWithPopup(auth, googleAuthProvider).then(result => {
