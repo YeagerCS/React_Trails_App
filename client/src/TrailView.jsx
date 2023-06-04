@@ -3,6 +3,7 @@ import Map from "./Map"
 import WeatherDisplay from "./WeatherDisplay"
 import "./view.css"
 import { Header } from "./Header"
+import Contributors from "./Contributors"
 
 export default function TrailView({ getWeatherStr, getLanguage }){
     const location = useLocation()
@@ -38,6 +39,9 @@ export default function TrailView({ getWeatherStr, getLanguage }){
                 <div className="weathertime">
                     <h3>{trail.time}</h3>
                     <WeatherDisplay trail={trail} getWeatherStr={getWeatherStr}/>
+                </div>
+                <div className="contributorsDiv">
+                    <Contributors trail={trail}/>
                 </div>
             </div>
         </>

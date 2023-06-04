@@ -19,8 +19,7 @@ export function Header({ getLanguage, signOutUser = null }){
 
     useEffect(() => {
         document.getElementById("pp").src = user.photoURL;
-        alert(user.photoURL)
-    }, [])
+    }, [user])
 
     return(
         <header>

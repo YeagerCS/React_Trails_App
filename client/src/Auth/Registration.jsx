@@ -23,8 +23,11 @@ export default function Registration({ handleGoogleLogin }) {
     createUserWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
       const user = userCredential.user;
-      await updateProfilePic(user)
-      await addAdditionalRowsToUser(user.uid, "displayName", displayName, "photoURL", PhotoUrl, "emailVerified", false)
+      setTimeout(async () => {
+        await updateProfilePic(user)
+        await addAdditionalRowsToUser(user.uid, "displayName", displayName, "photoURL", PhotoUrl ? PhotoUrl : defaultPp, "emailVerified", false)
+        navigate("/")
+      }, 1000)
     })
     .catch((error) => {
       const errorCode = error.code;
@@ -35,9 +38,9 @@ export default function Registration({ handleGoogleLogin }) {
 
   async function updateProfilePic(userCred){
     if (PhotoUrl !== null) {
-      await updateProfile(userCred, { photoURL: PhotoUrl });
+      await updateProfile(userCred, { photoURL: PhotoUrl, displayName: displayName });
     } else{
-      await updateProfile(userCred, { photoURL: defaultPp} )
+      await updateProfile(userCred, { photoURL: defaultPp } )
     }
   }
 
@@ -70,7 +73,9 @@ export default function Registration({ handleGoogleLogin }) {
 
       const user = result.user;
       console.log(user);
-      navigate("/")
+      setTimeout(() => {
+        navigate("/")
+      }, 500)
     }).catch(error => console.error(error))
   }
 

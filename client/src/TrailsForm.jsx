@@ -39,8 +39,14 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
             const trailsSnapshot = await getDocs(
               query(collection(db, "trails"), where("user", "==", user.uid))
             );
+            const contributorSnapshot = await getDocs(
+                query(collection(db, "trails"), where("contributors", "array-contains", user.uid))
+            );
+            const contirbutorData = contributorSnapshot.docs.map(doc => doc.data())
             const trailsData = trailsSnapshot.docs.map((doc) => doc.data());
-            const updatedTrails = checkExpiration(trailsData);
+
+            const newTrails = [...contirbutorData, ...trailsData]
+            const updatedTrails = checkExpiration(newTrails);
             setTrails(updatedTrails);
           } catch (error) {
             console.error(error);
@@ -63,13 +69,12 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
                 return
             }
             const weatherStr = weatherStrArr[0]
-            console.log(weatherSymbols[weatherStr]);
             const rndID = crypto.randomUUID()
 
             setTrails(current => {
                 return [
                     ...current,
-                    {rid: rndID, name: trailName, date: trailDate, isCurrent: true, time: trailTime, weather: weatherSymbols[weatherStr], destination: destination}
+                    {rid: rndID, name: trailName, date: trailDate, isCurrent: true, time: trailTime, weather: weatherSymbols[weatherStr], destination: destination, contributors: [], creator: user.displayName}
                 ];
             })
            try {
@@ -81,7 +86,9 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
                weather: weatherSymbols[weatherStr],
                destination: destination,
                user: user.uid,
-               rid: rndID
+               rid: rndID,
+               contributors: [], 
+               creator: user.displayName
              });
              console.log("Document written with ID: ", docRef.id);
             } catch (e) {
@@ -209,7 +216,7 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
         <div className="mainDiv container">
             <div className="d-flex flex-row justify-content-between">
                 <form className="flex-grow-1 gap-1 flex-column d-flex me-5 mt-2">
-                <label htmlFor="trailName">{t["name"]}</label> {console.log(t)}
+                <label htmlFor="trailName">{t["name"]}</label>
                 <input type="text" name="trailName" id="trailName" className="boxStyle" value={trailName} onChange={e => setTrailName(e.target.value)}/>
                 <label htmlFor="trailDate">{t["excursionDate"]}</label>
                 <input type="date" name="trailDate" id="trailDate" className="boxStyle" value={trailDate} onChange={e => setTrailDate(e.target.value)}/>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, updateProfile } from "firebase/auth";
 import { auth, db } from "./fire";
 import { collection, getDocs, query, where } from "firebase/firestore";
 
@@ -24,9 +24,10 @@ export function useAuth() {
   }
 
   useEffect(() => {
-    const unsub = onAuthStateChanged(auth, user => {
+    const unsub = onAuthStateChanged(auth, async (user) => {
       if (user) {
-        
+        const newUser = await getUserByUid(user.uid)
+        await updateProfile(user, { displayName: newUser[0].displayName })
         localStorage.setItem("authUser", JSON.stringify(user));
         setAuthUser(user);
       } else {
