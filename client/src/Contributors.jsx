@@ -101,7 +101,7 @@ export default function Contributors({ trail }) {
         <button className='btn btn-primary' onClick={searchForUsers}>Search</button>
       </div>
       <div className='clist'>
-        <h2>Search</h2>
+        <h2>Searched Contributors</h2>
         <table className='styled-table search-table'>
           <thead>
             <tr>

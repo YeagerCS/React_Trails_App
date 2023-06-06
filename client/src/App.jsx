@@ -20,6 +20,8 @@ export default function App(){
 
     return _translations.en;
   })
+  const user = useAuth()
+  const [triggerReRender, setTriggerReRender] = useState(false)
 
   function getLanguage(lang){
     localStorage.setItem("LANG", lang)
@@ -125,26 +127,30 @@ export default function App(){
       }
   }
 
-  const isLoggedIn = useAuth()
+  useEffect(() => {
+    setTriggerReRender(true)
+  }, [user])
   
 
   return (
     <>
       <BrowserRouter> 
         <Routes>
-          {isLoggedIn ? (
+          {user ? (
             <>
               <Route exact path="/" element={<Home dragDiv={dragDiv} t={t} getLanguage={getLanguage} getWeatherStr={getWeatherStr}/>} />
               <Route path="/View" element={<TrailView getWeatherStr={getWeatherStr}/>}/>
+              <Route path="/Login" element={<Navigate to="/" />}/>
+              <Route path="/Registration" element={<Navigate to="/" />}/>
             </>
           ) : (
             <>
               <Route exact path="/" element={<Navigate to="/Login"/>} />
               <Route path="/View" element={<Navigate to="/Login"/>}/>
+              <Route path="/Login" element={<Login/>}/>
+              <Route path="/Registration" element={<Registration/>}/>
             </>
           )}
-          <Route path="/Registration" element={<Registration/>}/>
-          <Route path="/Login" element={<Login/>}/>
           <Route path="/*" element={<NotFound t={t}/>}/>
         </Routes>
       </BrowserRouter>
