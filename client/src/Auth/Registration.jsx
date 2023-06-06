@@ -26,7 +26,9 @@ export default function Registration({ handleGoogleLogin }) {
       setTimeout(async () => {
         await updateProfilePic(user)
         await addAdditionalRowsToUser(user.uid, "displayName", displayName, "photoURL", PhotoUrl ? PhotoUrl : defaultPp, "emailVerified", false)
-        navigate("/")
+        setTimeout(() => {
+          navigate("/")
+        }, 500)
       }, 1000)
     })
     .catch((error) => {

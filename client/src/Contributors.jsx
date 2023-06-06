@@ -8,7 +8,6 @@ export default function Contributors({ trail }) {
   const authUser = useAuth()
   const [searchInput, setSearchInput] = useState("")
   const [users, setUsers] = useState([])
-  const [contributors, setContributors] = useState([])
   const [searchedUsers, setSearchedUsers] = useState([])
 
   //TODO: fix rendering problem; allow only the creator to make changes.
@@ -28,18 +27,15 @@ export default function Contributors({ trail }) {
   }
 
   async function addContributor(user) {
-    console.log(contributors);
-    const newContributors = [...contributors, user.uid];
-    setContributors(newContributors);
-  
-
+    const newContributors = users.map(obj => obj.uid)
+    const addedContributors = [...newContributors, user.uid]
     try {
       const querySnapshot = await getDocs(
         query(collection(db, "trails"), where("rid", "==", trail.rid))
       );
       querySnapshot.forEach((doc) => {
         updateDoc(doc.ref, {
-          contributors: newContributors
+          contributors: addedContributors
         });
       });
     } catch (error) {
@@ -48,8 +44,8 @@ export default function Contributors({ trail }) {
   }
 
   async function removeContributor(user) {
-    const newContributors = contributors.filter(current => current !== user.uid);
-    setContributors(newContributors);
+    const newContributors = users.filter(current => current.uid !== user.uid);
+    const activeContributors = users.map(obj => obj.uid)
   
     try {
       const querySnapshot = await getDocs(
@@ -57,7 +53,7 @@ export default function Contributors({ trail }) {
       );
       querySnapshot.forEach((doc) => {
         updateDoc(doc.ref, {
-          contributors: newContributors
+          contributors: activeContributors
         });
       });
     } catch (error) {
@@ -80,18 +76,21 @@ export default function Contributors({ trail }) {
     const data = snapshot.docs.map(doc => doc.data())
     console.log("loading", data);
     if(data){
-      setContributors(() => data.map(elem => elem.uid))
       setUsers(data)
     }
   }
 
-  function evaluateContributor(user){
-    addContributor(user)
-    loadContributors()
+  async function evaluateContributor(user){
+    await addContributor(user)
+    await loadContributors()
   }
 
   useEffect(() => {
-    loadContributors()
+    async function loadSyncContributors(){
+      await loadContributors()
+    }
+
+    loadSyncContributors()
   }, [])
 
   return (
@@ -102,6 +101,7 @@ export default function Contributors({ trail }) {
         <button className='btn btn-primary' onClick={searchForUsers}>Search</button>
       </div>
       <div className='clist'>
+        <h2>Search</h2>
         <table className='styled-table search-table'>
           <thead>
             <tr>
@@ -128,6 +128,7 @@ export default function Contributors({ trail }) {
         </table>
       </div>
       <div className='clist2'>
+        <h2>Active Contributors</h2>
         <table className='styled-table search-table'>
           <thead>
             <tr>
