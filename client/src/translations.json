@@ -11,7 +11,17 @@
         "e404back": "Go Back",
         "dateError": "Date can't be in the past",
         "timeError": "Invalid time format",
-        "destExample": "e.g. London"
+        "destExample": "e.g. London",
+        "home": "Home",
+        "signOut": "Sign Out", 
+        "creator": "Creator",
+        "view": "View",
+        "locationPin": "Location Pin",
+        "locationRoute": "Location Route",
+        "username": "Username",
+        "searchedContributors": "Searched Contributors",
+        "activeContributors": "Active Contributors",
+        "search": "Search"
     },
     "de":{
         "name": "Name",

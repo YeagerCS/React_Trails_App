@@ -3,18 +3,17 @@ import { useAuth } from './Auth/checkAuth'
 import { collection, getDocs, query, updateDoc, where } from 'firebase/firestore'
 import { db } from './Auth/fire'
 import { updateProfile } from 'firebase/auth'
+import Dialog from './Dialog'
 
 export default function Contributors({ trail }) {
   const authUser = useAuth()
   const [searchInput, setSearchInput] = useState("")
   const [users, setUsers] = useState([])
   const [searchedUsers, setSearchedUsers] = useState([])
+  const [creator, setCreator] = useState({})
+  const [displayDialog, setDisplayDialog] = useState([false, ""])
 
   //TODO: allow only the creator to make changes.
-
-  async function loadCreator(){
-
-  }
 
   async function searchForUsers(e){
     e.preventDefault()
@@ -32,7 +31,16 @@ export default function Contributors({ trail }) {
   }
 
   async function addContributor(user) {
+    if(creator.uid !== authUser.uid){
+      setDisplayDialog([true, "Only the owner can modify this trail."])
+      return;
+    }
     const newContributors = users.map(obj => obj.uid)
+    if(newContributors.includes(user.uid)){
+      setDisplayDialog([true, "Contributor already exists"])
+      return;
+    }
+
     const addedContributors = [...newContributors, user.uid]
     try {
       const querySnapshot = await getDocs(
@@ -49,8 +57,12 @@ export default function Contributors({ trail }) {
   }
 
   async function removeContributor(user) {
+    if(creator.uid !== authUser.uid){
+      setDisplayDialog([true, "Only the owner can modify this trail."])
+      return;
+    }
     const newContributors = users.filter(current => current.uid !== user.uid);
-    const activeContributors = users.map(obj => obj.uid)
+    const activeContributors = newContributors.map(obj => obj.uid)
   
     try {
       const querySnapshot = await getDocs(
@@ -64,6 +76,8 @@ export default function Contributors({ trail }) {
     } catch (error) {
       console.error(error);
     }
+
+    setUsers(newContributors)
   }
   
 
@@ -95,11 +109,28 @@ export default function Contributors({ trail }) {
       await loadContributors()
     }
 
+    async function loadCreator(){
+      try{
+        const snapshotOne = await getDocs(
+          query(collection(db, "users"), where("uid", "==", trail.creator[1]))
+        );
+        const data = snapshotOne.docs.map(doc => doc.data())
+        const creator = data[0]
+        setCreator(creator)
+  
+      } catch(error){
+        console.log(error);
+      }
+    }
+
+    loadCreator()
     loadSyncContributors()
   }, [])
 
   return (
     <div className='contributors'>
+      {displayDialog[0] && <Dialog closeAlert={() => setDisplayDialog([false, []])} message={displayDialog[1]}/>}
+
       <div className='cform'>
         <label htmlFor="users">Username / Email</label>
         <input value={searchInput} onChange={(e) => setSearchInput(e.target.value)} type="text" className='boxStyle' name='users'/>
