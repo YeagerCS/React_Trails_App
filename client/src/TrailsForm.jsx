@@ -7,7 +7,6 @@ import _translations from "./translations.json"
 import { collection, addDoc, getDocs, query, where, deleteDoc, doc } from "firebase/firestore";
 import { db } from "./Auth/fire" 
 import { useAuth } from './Auth/checkAuth';
-import { AuthCredential } from 'firebase/auth';
 
 
 export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, setDisplayDialog, dragDiv, signOutUser }){
@@ -201,7 +200,7 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
 
     async function updateWeather(){
        const updatedTrails = await Promise.all(trails.map(async trail =>{
-        const weatherStr = await getWeatherStr(trail.date, trail.time)
+        const weatherStr = await getWeatherStr(trail.date, trail.time, trail.destination)
         return {
             ...trail,
             weather: weatherSymbols[weatherStr]

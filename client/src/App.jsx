@@ -5,11 +5,11 @@ import {BrowserRouter, Routes, Route, useNavigate, Navigate, useAsyncError} from
 import _translations from "./translations.json"
 import { useEffect, useState } from "react";
 import Registration from "./Auth/Registration";
-import Login from "./Auth/Login";
+import { Login } from "./Auth/Login";
 import { useAuth } from "./Auth/checkAuth";
 import TrailView from "./TrailView";
 
-const apikey = "621e2c097166ed6ba8f64cbed0173994"
+const apikey = "81b0e4484cd7dc39bcced0e027bb1452"
 
 
 export default function App(){
@@ -96,14 +96,12 @@ export default function App(){
   }
 
   function fetchWeather(date, time, _destination) {
-    const unixTimestamp = "1970-01-01T";
-
-    const selectedDate = new Date(date);
-    const selctedTime = new Date(unixTimestamp + time + ":00")
-    const timestamp = Math.floor((selectedDate.getTime() + selctedTime.getTime()) / 1000);
+    const currentDate = new Date(date)
+    currentDate.setTime(time)
+    const dtms = currentDate.getTime()
     // const { latitude, longitude } = location;
     // console.log(latitude, longitude, timestamp)
-    const url = "https://api.openweathermap.org/data/2.5/weather?q="+ _destination +"&appid=" + apikey;
+    const url = `https://api.openweathermap.org/data/2.5/weather?q=${_destination}&dt=${dtms}&appid=${apikey}`;
   
     return fetch(url)
       .then(response => response.json())
@@ -115,6 +113,54 @@ export default function App(){
         }
     });
   } 
+
+  async function getCoordinates(destination){
+    const apiKey = 'AIzaSyAy1PQtALW3rbdXH8gBtGFd8Q7db1aI0kI';
+
+    const apiUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(destination)}&key=${apiKey}`;
+
+    return fetch(apiUrl)
+      .then(response => response.json())
+      .then(data => {
+        if (data.results.length > 0) {
+          const latitude = data.results[0].geometry.location.lat;
+          const longitude = data.results[0].geometry.location.lng;
+          return { latitude, longitude };
+        } else {
+          throw new Error('No results found for the location.');
+        }
+      })
+      .catch(error => {
+        console.error(error);
+        throw new Error('An error occurred during the geocoding request.');
+      });
+  }
+
+  function fetchOpenWeather(date, time, _destination){
+    const currentDate = new Date(date)
+    currentDate.setTime(time)
+    const dtms = currentDate.getTime()
+
+    getCoordinates(_destination).then(coords => {
+      const lat = coords.latitude;
+      const lon = coords.longitude;
+
+      const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apikey}`;
+  
+      return fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          if(data.cod === 200){
+              console.log(data);
+              const forecast = data.list.filter(item => item.dt_txt.startsWith(futureDate));
+
+              return [forecast.weather[0].main, Math.round(forecast.main.temp - 273.15)];
+          } else{
+              return data.cod
+          }
+      });
+    })
+  }
 
   async function getWeatherStr(date, time, destination){
       try{

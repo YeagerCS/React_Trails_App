@@ -17,6 +17,17 @@ export default function Registration({ handleGoogleLogin }) {
   const [displayName, setDisplayName] = useState('');
   const [PhotoUrl, setPhotoUrl] = useState(null);
   const navigate = useNavigate();
+  const user = useAuth()
+
+  useEffect(() => {
+    try{
+      if(user){
+        navigate("/")
+      }
+    } catch(error){
+      alert(error)
+    }
+  }, [user])
   
 
   async function handleRegistration() {
@@ -25,10 +36,9 @@ export default function Registration({ handleGoogleLogin }) {
       const user = userCredential.user;
       setTimeout(async () => {
         await updateProfilePic(user)
-        await addAdditionalRowsToUser(user.uid, "displayName", displayName, "photoURL", PhotoUrl ? PhotoUrl : defaultPp, "emailVerified", false)
-        setTimeout(() => {
+        //await addAdditionalRowsToUser(user.uid, "displayName", displayName, "photoURL", PhotoUrl ? PhotoUrl : defaultPp, "emailVerified", false)
+          location.reload()
           navigate("/")
-        }, 500)
       }, 1000)
     })
     .catch((error) => {
@@ -40,9 +50,9 @@ export default function Registration({ handleGoogleLogin }) {
 
   async function updateProfilePic(userCred){
     if (PhotoUrl !== null) {
-      await updateProfile(userCred, { photoURL: PhotoUrl, displayName: displayName });
+      await updateProfile(userCred, { photoURL: PhotoUrl, displayName: displayName, emailVerified: false });
     } else{
-      await updateProfile(userCred, { photoURL: defaultPp } )
+      await updateProfile(userCred, { photoURL: defaultPp, displayName: displayName, emailVerified: false } )
     }
   }
 

@@ -1,18 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
 import { auth, googleAuthProvider } from "./fire" 
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from './checkAuth';
 
-export default function Login({ handleGoogleLogin }) {
+export function Login({ handleGoogleLogin }) {
   const navigate = useNavigate()
   const [username, setUsername] = useState('');
+  const user = useAuth()
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    try{
+      if(user){
+        navigate("/")
+      }
+    } catch(error){
+      alert(error)
+    }
+  }, [user])
 
   function handleLogin() {
     signInWithEmailAndPassword(auth, username, password)
     .then((userCredential) => {
       const user = userCredential.user;
+      location.reload()
       navigate("/")
       // ...
     })
@@ -33,6 +45,7 @@ export default function Login({ handleGoogleLogin }) {
       navigate("/")
     }).catch(error => console.error(error))
   }
+
 
   return (
     <div className="popup-overlay">
@@ -59,5 +72,6 @@ export default function Login({ handleGoogleLogin }) {
       </div>
     </div>
   );
+
 };
 
