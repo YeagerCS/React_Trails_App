@@ -5,7 +5,7 @@ import "./view.css"
 import { Header } from "./Header"
 import Contributors from "./Contributors"
 
-export default function TrailView({ getWeatherStr, getLanguage }){
+export default function TrailView({ getWeatherStr, getLanguage, t }){
     const location = useLocation()
     const trail = location.state?.trail
 
@@ -22,7 +22,7 @@ export default function TrailView({ getWeatherStr, getLanguage }){
 
     return (
         <>
-            <Header getLanguage={getLanguage}/>
+            <Header getLanguage={getLanguage} t={t}/>
             <div className="main">
                 <header className="viewHeader">
                     <h1>{trail.name}</h1>
@@ -32,7 +32,7 @@ export default function TrailView({ getWeatherStr, getLanguage }){
                     <h3>{trail.destination}</h3>
                     <div className="dest">
                         <div>
-                            <Map location={trail.destination}/>
+                            <Map location={trail.destination} t={t}/>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@ export default function TrailView({ getWeatherStr, getLanguage }){
                     <WeatherDisplay trail={trail} getWeatherStr={getWeatherStr}/>
                 </div>
                 <div className="contributorsDiv">
-                    <Contributors trail={trail}/>
+                    <Contributors trail={trail} t={t}/>
                 </div>
             </div>
         </>

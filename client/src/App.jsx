@@ -185,7 +185,7 @@ export default function App(){
           {user ? (
             <>
               <Route exact path="/" element={<Home dragDiv={dragDiv} t={t} getLanguage={getLanguage} getWeatherStr={getWeatherStr}/>} />
-              <Route path="/View" element={<TrailView getWeatherStr={getWeatherStr}/>}/>
+              <Route path="/View" element={<TrailView getWeatherStr={getWeatherStr} t={t} getLanguage={getLanguage}/>}/>
               <Route path="/Login" element={<Navigate to="/" />}/>
               <Route path="/Registration" element={<Navigate to="/" />}/>
             </>

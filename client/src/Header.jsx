@@ -3,11 +3,53 @@ import { useAuth } from "./Auth/checkAuth"
 import React, { useEffect, useState } from 'react';
 import { signOut } from "firebase/auth";
 import { auth } from "./Auth/fire";
-import Modal from "react-bootstrap/Modal";
 
-export function Header({ getLanguage, signOutUser = null }){
+export function Header({ getLanguage, signOutUser = null, t }){
     const navigate = useNavigate()  
     const user = useAuth()
+    const [normalMode, setNormalMode] = useState(true)
+
+    function toggleMode(){
+      if(normalMode){
+        const textElements = document.querySelectorAll("body *");
+        textElements.forEach((element) => {
+          element.style.color = "black";
+        });
+
+        const inputElements = document.querySelectorAll("input");
+        inputElements.forEach((element) => {
+          element.style.background = "white";
+        });
+
+        const buttonElements = document.querySelectorAll("button");
+        buttonElements.forEach((element) => {
+          element.style.background = "white";
+        });
+
+        const tables = document.querySelectorAll("table th");
+        tables.forEach((element) => {
+          element.style.background = "white";
+        });
+
+        const selects = document.querySelectorAll("select");
+        selects.forEach(elem => {
+          elem.style.background = "white"
+          elem.style.border = "2px solid rgb(107, 215, 255)"
+        })
+
+        const options = document.querySelectorAll("option");
+        options.forEach(elem => {
+          elem.style.background = "white"
+        })
+
+        const dialogs = document.querySelectorAll("dialog");
+        dialogs.forEach(elem => {
+          elem.style.background = "white"
+        })
+
+        document.body.style.background = "white"
+      }
+    }
 
     function signOutUsr(){
         signOut(auth)
@@ -37,7 +79,7 @@ export function Header({ getLanguage, signOutUser = null }){
             <nav>   
                 <ul>
                     <div>
-                        <div><Link to="/"><button className="btnStyle">Home</button></Link></div>
+                        <div><Link to="/"><button className="btnStyle">{t["home"]}</button></Link></div>
                         <div className="languages"> 
                             <select className="language" value={localStorage.getItem("LANG")} onChange={handleChange}>
                             <option value="de">German</option>
@@ -58,17 +100,18 @@ export function Header({ getLanguage, signOutUser = null }){
                               <dialog id="account-dialog">
                                 {user ? (
                                   <>
-                                    <h2>Account</h2>
+                                    <h2>{t["account"]}</h2>
                                     <p><img src={user.photoURL} className="profilePic" id="pp"/> {user.displayName} </p>
-                                    <p>Email: {user.email}</p>
+                                    <p>{user.email}</p>
                                     
-                                    <button onClick={closePopup}>Close</button>
+                                    <button onClick={closePopup} className="btn btn-dark btn-outline-danger">{t["close"]}</button>
                                   </>
                                 ) : (
                                   <p>Loading...</p>
                                 )}
                               </dialog>
-                                <li><button className="btnStyle" onClick={() => signOutUser ? signOutUser() : signOutUsr()}>Sign Out</button></li>
+                                <li><button className="btnStyle" onClick={() => signOutUser ? signOutUser() : signOutUsr()}>{t["signOut"]}</button></li>
+                                {/* <li><button className="btnStyle" onClick={toggleMode}>Toggle Mode</button></li> */}
                             </div>
                         }
                     </div>

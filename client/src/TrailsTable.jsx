@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes, useNavigate } from "react-router-dom";
 import TrailView from "./TrailView";
 import { useAuth } from "./Auth/checkAuth";
 
-export function TrailsTable({ sortByName, sortByDate, t, trails, getFormattedDate, handleDeleteTrails, setSelected, dragDiv, signOutUser }){
+export function TrailsTable({ sortByName, sortByDate, t, trails, getFormattedDate, handleDeleteTrails, setSelected, dragDiv }){
     const [displayMap, setDisplayMap] = useState([false, ""])
     const navigate = useNavigate()
     const user = useAuth()
@@ -24,7 +24,7 @@ export function TrailsTable({ sortByName, sortByDate, t, trails, getFormattedDat
     return (
         <>
 
-            {displayMap[0] && <Map location={displayMap[1]} close={() => setDisplayMap([false, ""])} dragDiv={dragDiv}/>}
+            {displayMap[0] && <Map location={displayMap[1]} close={() => setDisplayMap([false, ""])} dragDiv={dragDiv} t={t}/>}
             <table className="styled-table">
                 <thead> 
                     <tr>
@@ -32,7 +32,7 @@ export function TrailsTable({ sortByName, sortByDate, t, trails, getFormattedDat
                         <th onClick={sortByDate}>{t["excursionDate"]} <strong>&#8693;</strong></th>
                         <th>{t["time"]}</th>
                         <th>{t["destination"]}</th>
-                        <th>Creator</th>
+                        <th>{t["creator"]}</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -48,7 +48,7 @@ export function TrailsTable({ sortByName, sortByDate, t, trails, getFormattedDat
                                 <td onClick={(e) => displayMapFR(e.target.innerText)}>{trail.destination} 📌</td>
                                 <td onClick={(e) => displayMapFR(e.target.innerText)}>{trail.creator[0]}</td>
                                 <td><button onClick={e =>  handleDeleteTrails(e, trail.rid)} className="btn btn-dark btn-outline-danger">{t["delete"]}</button></td>
-                                <td><button className="btn btn-primary" onClick={() => evaluateView(trail)}>View</button></td>
+                                <td><button className="btn btn-primary" onClick={() => evaluateView(trail)}>{t["view"]}</button></td>
                             </tr> 
                         </>
                     ))}

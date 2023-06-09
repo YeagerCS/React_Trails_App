@@ -5,7 +5,7 @@ import { db } from './Auth/fire'
 import { updateProfile } from 'firebase/auth'
 import Dialog from './Dialog'
 
-export default function Contributors({ trail }) {
+export default function Contributors({ trail, t }) {
   const authUser = useAuth()
   const [searchInput, setSearchInput] = useState("")
   const [users, setUsers] = useState([])
@@ -19,7 +19,7 @@ export default function Contributors({ trail }) {
     e.preventDefault()
     try{
       const snapshotOne = await getDocs(
-        query(collection(db, "users"), where("displayName", "!=", null))
+        query(collection(db, "users"), where("email", "!=", null))
       );
 
       const data = snapshotOne.docs.map(doc => doc.data())
@@ -132,18 +132,18 @@ export default function Contributors({ trail }) {
       {displayDialog[0] && <Dialog closeAlert={() => setDisplayDialog([false, []])} message={displayDialog[1]}/>}
 
       <div className='cform'>
-        <label htmlFor="users">Username / Email</label>
+        <label htmlFor="users">{t["email"]}</label>
         <input value={searchInput} onChange={(e) => setSearchInput(e.target.value)} type="text" className='boxStyle' name='users'/>
-        <button className='btn btn-primary' onClick={searchForUsers}>Search</button>
+        <button className='btn btn-primary' onClick={searchForUsers}>{t["search"]}</button>
       </div>
       <div className='clist'>
-        <h2>Searched Contributors</h2>
+        <h2>{t["searchedContributors"]}</h2>
         <table className='styled-table search-table'>
           <thead>
             <tr>
               <th></th>
-              <th>Username</th>
-              <th>Email</th>
+              <th>{t["username"]}</th>
+              <th>{t["email"]}</th>
               <th></th>
             </tr>
           </thead>
@@ -164,13 +164,13 @@ export default function Contributors({ trail }) {
         </table>
       </div>
       <div className='clist2'>
-        <h2>Active Contributors</h2>
+        <h2>{t["activeContributors"]}</h2>
         <table className='styled-table search-table'>
           <thead>
             <tr>
               <th></th>
-              <th>Username</th>
-              <th>Email</th>
+              <th>{t["username"]}</th>
+              <th>{t["email"]}</th>
               <th></th>
             </tr>
           </thead>
@@ -182,7 +182,7 @@ export default function Contributors({ trail }) {
                     <td><img src={user.photoURL}/></td>
                     <td>{user.displayName}</td>
                     <td>{user.email}</td>
-                    <td><button className='btn btn-dark btn-outline-danger' onClick={() => removeContributor(user)}>Remove</button></td>
+                    <td><button className='btn btn-dark btn-outline-danger' onClick={() => removeContributor(user)}>{t["delete"]}</button></td>
                   </tr>
                 </>
               )
