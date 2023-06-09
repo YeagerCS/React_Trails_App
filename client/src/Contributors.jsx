@@ -9,7 +9,6 @@ export default function Contributors({ trail }) {
   const [searchInput, setSearchInput] = useState("")
   const [users, setUsers] = useState([])
   const [searchedUsers, setSearchedUsers] = useState([])
-  const []
 
   //TODO: allow only the creator to make changes.
 
