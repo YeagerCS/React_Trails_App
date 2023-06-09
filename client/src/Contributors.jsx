@@ -9,8 +9,14 @@ export default function Contributors({ trail }) {
   const [searchInput, setSearchInput] = useState("")
   const [users, setUsers] = useState([])
   const [searchedUsers, setSearchedUsers] = useState([])
+  const []
 
-  //TODO: fix rendering problem; allow only the creator to make changes.
+  //TODO: allow only the creator to make changes.
+
+  async function loadCreator(){
+
+  }
+
   async function searchForUsers(e){
     e.preventDefault()
     try{
