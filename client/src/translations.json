@@ -21,9 +21,13 @@
         "username": "Username",
         "searchedContributors": "Searched Contributors",
         "activeContributors": "Active Contributors",
-        "search": "Search"
+        "search": "Search",
+        "close": "Close",
+        "account": "Account",
+        "add": "Add",
+        "email": "Email"
     },
-    "de":{
+    "de": {
         "name": "Name",
         "excursionDate": "Ausflugsdatum",
         "time": "Zeit",
@@ -35,9 +39,23 @@
         "e404back": "Zurück",
         "dateError": "Date kann nicht in der Vergangenheit liegen",
         "timeError": "Ungültiges Zeitformat",
-        "destExample": "z.B. Berlin"
+        "destExample": "z.B. Berlin",
+        "home": "Startseite",
+        "signOut": "Abmelden",
+        "creator": "Ersteller",
+        "view": "Ansehen",
+        "locationPin": "Ort markieren",
+        "locationRoute": "Route zum Ort",
+        "username": "Benutzername",
+        "searchedContributors": "Gesuchte Mitwirkende",
+        "activeContributors": "Aktive Mitwirkende",
+        "search": "Suchen",
+        "close": "Schliessen",
+        "account": "Account",
+        "add": "Hinzufügen",
+        "email": "Email"
     },
-    "fr":{
+    "fr": {
         "name": "Nom",
         "excursionDate": "Date de l'excursion",
         "time": "Heure",
@@ -45,13 +63,27 @@
         "delete": "Supprimer",
         "submit": "Soumettre",
         "e404": "Page non trouvée",
-        "e404message": "Malheureusement, il n'y a pas de sentiers sur cette page!",
+        "e404message": "Malheureusement, il n'y a pas de sentiers sur cette page !",
         "e404back": "Retour",
         "dateError": "La date ne peut pas être dans le passé",
         "timeError": "Format d'heure non valide",
-        "destExample": "par ex. Paris"
-    },
-    "sq":{
+        "destExample": "par ex. Paris",
+        "home": "Accueil",
+        "signOut": "Déconnexion",
+        "creator": "Créateur",
+        "view": "Voir",
+        "locationPin": "Marqueur de lieu",
+        "locationRoute": "Itinéraire vers le lieu",
+        "username": "Nom d'utilisateur",
+        "searchedContributors": "Contributeurs recherchés",
+        "activeContributors": "Contributeurs actifs",
+        "search": "Rechercher",
+        "close": "Fermer",
+        "account": "Compte",
+        "add": "Ajouter",
+        "email": "Email"
+      },
+      "sq": {
         "name": "Emri",
         "excursionDate": "Data e ekskursionit",
         "time": "Koha",
@@ -63,9 +95,23 @@
         "e404back": "Kthehu",
         "dateError": "Data nuk mund të jetë në të kaluarën",
         "timeError": "Format i pavlefshëm i kohës",
-        "destExample": "psh Tirana"
-    },
-    "ar":{
+        "destExample": "psh Tirana",
+        "home": "Ballina",
+        "signOut": "Ç'kyçu",
+        "creator": "Krijuesi",
+        "view": "Shiko",
+        "locationPin": "Vendos vendndodhjen",
+        "locationRoute": "Rruga e vendndodhjes",
+        "username": "Emri i përdoruesit",
+        "searchedContributors": "Kontribuesit e kërkuar",
+        "activeContributors": "Kontribuesit aktive",
+        "search": "Kërko",
+        "close": "Mbyll",
+        "account": "Llogari",
+        "add": "Shtoni",
+        "email": "Email"
+      },
+      "ar": {
         "name": "الاسم",
         "excursionDate": "تاريخ الرحلة",
         "time": "الوقت",
@@ -77,6 +123,20 @@
         "e404back": "العودة",
         "dateError": "لا يمكن أن يكون التاريخ في الماضي",
         "timeError": "تنسيق الوقت غير صالح",
-        "destExample": "على سبيل المثال دبي"
-    }
+        "destExample": "على سبيل المثال دبي",
+        "home": "الصفحة الرئيسية",
+        "signOut": "تسجيل الخروج",
+        "creator": "المنشئ",
+        "view": "عرض",
+        "locationPin": "تعيين الموقع",
+        "locationRoute": "مسار الموقع",
+        "username": "اسم المستخدم",
+        "searchedContributors": "المساهمون المبحوث عنهم",
+        "activeContributors": "المساهمون النشطون",
+        "search": "بحث",
+        "close": "يغلق",
+        "account": "حساب",
+        "add": "يضيف",
+        "email": "بريد إلكتروني"
+      }
 }

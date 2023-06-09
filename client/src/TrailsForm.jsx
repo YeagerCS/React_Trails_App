@@ -9,7 +9,7 @@ import { db } from "./Auth/fire"
 import { useAuth } from './Auth/checkAuth';
 
 
-export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, setDisplayDialog, dragDiv, signOutUser }){
+export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, setDisplayDialog, dragDiv, signOutUser, getLanguage }){
     const [trailName, setTrailName] = useState("")
     const [trailDate, setTrailDate] = useState("")
     const user = useAuth()

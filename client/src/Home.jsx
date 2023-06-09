@@ -59,8 +59,8 @@ export function Home({t, getLanguage, dragDiv, getWeatherStr}){
             {displayDialog[0] && <Dialog closeAlert={() => setDisplayDialog([false, []])} message={displayDialog[1]}/>}
             {signOutDialog[0] && <Dialog closeAlert={closeSignOut} message={signOutDialog[1]}/>}
             <div id="HomeDiv">
-                <Header getLanguage={getLanguage} signOutUser={signOutUser}/>
-                <TrailsForm t={t} setSelected={setSelected} getWeatherStr={getWeatherStr} getFormattedDate={getFormattedDate} setDisplayDialog={setDisplayDialog} dragDiv={dragDiv} signOutUser={closeSignOut}/>
+                <Header getLanguage={getLanguage} signOutUser={signOutUser} t={t}/>
+                <TrailsForm t={t} setSelected={setSelected} getWeatherStr={getWeatherStr} getFormattedDate={getFormattedDate} setDisplayDialog={setDisplayDialog} dragDiv={dragDiv} signOutUser={closeSignOut} getLanguage={getLanguage}/>
             </div>
         </> 
     )

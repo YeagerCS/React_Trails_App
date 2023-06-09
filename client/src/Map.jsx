@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-export default function Map({ location, close = null, dragDiv = null }){
+export default function Map({ location, close = null, dragDiv = null, t }){
     const mapContainerRef = useRef(null)
     const [routingView, setRoutingView] = useState(false)
     const [idN, setIDN] = useState(["map", "mapDiv"])
@@ -42,7 +42,6 @@ export default function Map({ location, close = null, dragDiv = null }){
     }
 
     useEffect(() => {
-        dragDiv && dragDiv("mapDiv", mapContainerRef)
         !close && setIDN(["newMap", "newMapDiv"])
     }, []);
     
@@ -101,59 +100,11 @@ export default function Map({ location, close = null, dragDiv = null }){
             })
         }
       
-    //   function getRoute(coords, radius, accessToken) {
-    //     const profile = "driving"
-    //     console.log(coords);
-    //     const url = `https://api.mapbox.com/matching/v5/mapbox/${profile}/8.860202,47.195204;8.8292052,47.2363849?geometries=geojson&steps=true&access_token=${accessToken}`;
-    //     return fetch(url)
-    //       .then(response => response.json())
-    //       .then(data => {
-    //         // Process the response data
-    //         console.log(`https://api.mapbox.com/matching/v5/mapbox/${profile}/${coords}?geometries=geojson&steps=true&access_token=${accessToken}`);
-    //         console.log(data);
-    //         return data.matchings[0].geometry; // Return the routes
-    //       })
-    //       .catch(error => {
-    //         // Handle any errors
-    //         console.error('Error:', error);
-    //       });
-    //   }
-      
-    //   async function activateRoute() {
-    //     const accessToken = 'pk.eyJ1IjoibWlsa3NoYWtlcjc3NSIsImEiOiJjbGk0NmJ6ZnMwY2s4M2ZwY20xOHNxenZnIn0.rCPRzvm_TtisulAPpl4_0A';
-    //     const geocodingEndpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
-    //       location
-    //     )}.json?access_token=${accessToken}`;
-      
-    //     let [longitude, latitude] = [0, 0];
-      
-    //     try {
-    //       const response = await fetch(geocodingEndpoint);
-    //       const data = await response.json();
-      
-    //       if (data.features.length > 0) {
-    //         [longitude, latitude] = data.features[0].center;
-    //       }
-    //     } catch (error) {
-    //       alert(error);
-    //     }
-      
-    //     let coords = []
-    //     getCurrentLocation().then(async data => {
-    //       coords = [[longitude, latitude], [data.longitude, data.latitude]]
-    //       const newCoords = coords.join(';')
-    //       const radius = coords.map(() => 25)
-    //       const route = await getRoute(newCoords, radius, accessToken);
-    //       displayRouteOnMap(route);
-    //     });
-    //   }
-      
-
     return(
         <div id={idN[1]}>
             <div id="mapNav">
-                <button className="btn btnStyle" id={!close && "newLocationBtn"} onClick={() => setRoutingView(false)}>Location Pin</button>
-                <button className="btn btnStyle" id={!close && "newLocationRoute"} onClick={() => setRoutingView(true)}>Location Route</button>
+                <button className="btn btnStyle" id={!close && "newLocationBtn"} onClick={() => setRoutingView(false)}>{t["locationPin"]}</button>
+                <button className="btn btnStyle" id={!close && "newLocationRoute"} onClick={() => setRoutingView(true)}>{t["locationRoute"]}</button>
             </div><br />
             <div ref={mapContainerRef} id={idN[0]}/><br />
             {close && <button id="mapClose" className="btn btn-outline-danger btn-dark" onClick={close}>Close</button>}

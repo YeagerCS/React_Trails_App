@@ -510,3 +510,27 @@ nav div{
 .userCred:hover{
   background-color: rgb(40, 41, 48);
 }
+
+#account-dialog{
+  background-color: rgb(52, 53, 65);
+  color: rgb(107, 215, 255);
+  border: none;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+#account-dialog h2{
+  font-size: 35px;
+}
+
+#account-dialog p{
+  font-size: 20px;
+}
+
+#account-dialog .profilePic{
+  width: 60px;
+  height: 60px;
+}
+
+#account-dialog button{
+  width: 80px;
+}

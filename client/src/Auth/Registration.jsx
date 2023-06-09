@@ -34,12 +34,14 @@ export default function Registration({ handleGoogleLogin }) {
     createUserWithEmailAndPassword(auth, email, password)
     .then(async (userCredential) => {
       const user = userCredential.user;
-      setTimeout(async () => {
         await updateProfilePic(user)
-        //await addAdditionalRowsToUser(user.uid, "displayName", displayName, "photoURL", PhotoUrl ? PhotoUrl : defaultPp, "emailVerified", false)
+        setTimeout(async () => {
+          await addAdditionalRowsToUser(user.uid, "displayName", displayName, "photoURL", PhotoUrl ? PhotoUrl : defaultPp, "emailVerified", false)
+        }, 1000)
+        setTimeout(() => {
           location.reload()
           navigate("/")
-      }, 1000)
+        }, 500)
     })
     .catch((error) => {
       const errorCode = error.code;
