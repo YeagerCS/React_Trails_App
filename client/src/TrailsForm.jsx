@@ -73,7 +73,7 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
             setTrails(current => {
                 return [
                     ...current,
-                    {rid: rndID, name: trailName, date: trailDate, isCurrent: true, time: trailTime, weather: weatherSymbols[weatherStr], destination: destination, contributors: [], creator: user.displayName}
+                    {rid: rndID, name: trailName, date: trailDate, isCurrent: true, time: trailTime, weather: weatherSymbols[weatherStr], destination: destination, contributors: [], creator: [user.displayName, user.uid]}
                 ];
             })
            try {
@@ -87,7 +87,7 @@ export function TrailsForm({ t, setSelected, getWeatherStr, getFormattedDate, se
                user: user.uid,
                rid: rndID,
                contributors: [], 
-               creator: user.displayName
+               creator: [user.displayName, user.uid]
              });
              console.log("Document written with ID: ", docRef.id);
             } catch (e) {

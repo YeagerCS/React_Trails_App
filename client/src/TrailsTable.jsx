@@ -46,7 +46,7 @@ export function TrailsTable({ sortByName, sortByDate, t, trails, getFormattedDat
                                 {console.log(trail)}
                                 <td>{trail.time}</td>
                                 <td onClick={(e) => displayMapFR(e.target.innerText)}>{trail.destination} 📌</td>
-                                <td onClick={(e) => displayMapFR(e.target.innerText)}>{trail.creator}</td>
+                                <td onClick={(e) => displayMapFR(e.target.innerText)}>{trail.creator[0]}</td>
                                 <td><button onClick={e =>  handleDeleteTrails(e, trail.rid)} className="btn btn-dark btn-outline-danger">{t["delete"]}</button></td>
                                 <td><button className="btn btn-primary" onClick={() => evaluateView(trail)}>View</button></td>
                             </tr> 

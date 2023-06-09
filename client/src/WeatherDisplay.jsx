@@ -42,7 +42,7 @@ export default function WeatherDisplay({ trail, getWeatherStr, close = null, dra
 
     return (
         <div className={classNames[0]} id="alertDiv">
-            <h1 id="title">{trail.name}</h1>
+            <h1 id="title">{trail.name}	📌{trail.destination}</h1>
             <div className={classNames[1]}>
                 <div>
                     <h1>{weatherSymbols[weatherMinus2h[0]]}</h1>
