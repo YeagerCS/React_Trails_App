@@ -3,6 +3,7 @@ import { useAuth } from "./Auth/checkAuth"
 import React, { useEffect, useState } from 'react';
 import { signOut } from "firebase/auth";
 import { auth } from "./Auth/fire";
+import Modal from "react-bootstrap/Modal";
 
 export function Header({ getLanguage, signOutUser = null }){
     const navigate = useNavigate()  
@@ -20,6 +21,16 @@ export function Header({ getLanguage, signOutUser = null }){
     useEffect(() => {
         document.getElementById("pp").src = user.photoURL;
     }, [user])
+
+    const openPopup = () => {
+        const dialog = document.getElementById('account-dialog');
+        dialog.showModal();
+      };
+    
+      const closePopup = () => {
+        const dialog = document.getElementById('account-dialog');
+        dialog.close();
+      };
 
     return(
         <header>
@@ -43,8 +54,20 @@ export function Header({ getLanguage, signOutUser = null }){
                             </div>
                             :
                             <div className="loginTools">
-                                <img src="" className="profilePic" id="pp"/>
-                                <div className="userCred">&nbsp;{user.email}&nbsp;</div>
+                                <img onClick={openPopup} src="" className="profilePic" id="pp"/>
+                              <dialog id="account-dialog">
+                                {user ? (
+                                  <>
+                                    <h2>Account</h2>
+                                    <p><img src={user.photoURL} className="profilePic" id="pp"/> {user.displayName} </p>
+                                    <p>Email: {user.email}</p>
+                                    
+                                    <button onClick={closePopup}>Close</button>
+                                  </>
+                                ) : (
+                                  <p>Loading...</p>
+                                )}
+                              </dialog>
                                 <li><button className="btnStyle" onClick={() => signOutUser ? signOutUser() : signOutUsr()}>Sign Out</button></li>
                             </div>
                         }
