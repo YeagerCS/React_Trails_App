@@ -7,7 +7,7 @@ export default function Map({ location, close = null, dragDiv = null, t }){
     const [idN, setIDN] = useState(["map", "mapDiv"])
 
     async function fetchLocation(){
-        const accessToken = 'pk.eyJ1IjoibWlsa3NoYWtlcjc3NSIsImEiOiJjbGk0NmJ6ZnMwY2s4M2ZwY20xOHNxenZnIn0.rCPRzvm_TtisulAPpl4_0A';
+        const accessToken = '';
         const geocodingEndpoint = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
             location
         )}.json?access_token=${accessToken}`;
