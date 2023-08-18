@@ -9,7 +9,7 @@ import { Login } from "./Auth/Login";
 import { useAuth } from "./Auth/checkAuth";
 import TrailView from "./TrailView";
 
-const apikey = "81b0e4484cd7dc39bcced0e027bb1452"
+const apikey = ""
 
 
 export default function App(){
